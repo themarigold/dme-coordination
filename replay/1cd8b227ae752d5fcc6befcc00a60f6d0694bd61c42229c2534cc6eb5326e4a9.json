@@ -1,0 +1,11 @@
+{
+ "call": "write_patient_message",
+ "effort": "low",
+ "input_tokens": 1363,
+ "model": "claude-opus-5-5",
+ "output_tokens": 109,
+ "prompt_hash": "f1b21f001f2a1c6a583b3c1a13e2401753f41b391a873e64d43beb705f1483dc",
+ "stop_reason": "end_turn",
+ "text": "{\"text\": \"Hello Eleanor, this is Mira Mace with news about your wheelchair. {supplier.5.name} will be the supplier, and they will call you from {supplier.5.phone}. Medicare rules mean we need your written permission before the supplier can call you. We will send you a short form to sign so they can get in touch.\"}",
+ "thinking": ""
+}

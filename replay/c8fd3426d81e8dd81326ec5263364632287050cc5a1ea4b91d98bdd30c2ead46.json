@@ -1,0 +1,11 @@
+{
+ "call": "read_order_document",
+ "effort": "low",
+ "input_tokens": 5167,
+ "model": "claude-opus-5-5",
+ "output_tokens": 676,
+ "prompt_hash": "4612b62598201696954bace2a41c7cd7e981eec030e296086f51d877c222d61b",
+ "stop_reason": "end_turn",
+ "text": "{\"beneficiary_name\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Patient: Eleanor Martinez\",\"status\":\"found\",\"value\":\"Eleanor Martinez\"},\"medicare_id\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"MBI: 1EG4-TE5-MK73\",\"status\":\"found\",\"value\":\"1EG4-TE5-MK73\"},\"item_description\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Item: Lightweight wheelchair\",\"status\":\"found\",\"value\":\"Lightweight wheelchair\"},\"hcpcs_code\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"HCPCS: K0003\",\"status\":\"found\",\"value\":\"K0003\"},\"quantity\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Qty: 1\",\"status\":\"found\",\"value\":\"1\"},\"order_date\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Order date: 11/18/2026\",\"status\":\"found\",\"value\":\"11/18/2026\"},\"practitioner_name\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Ordering practitioner: Sarah Chen, MD\",\"status\":\"found\",\"value\":\"Sarah Chen, MD\"},\"practitioner_npi\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"NPI: 1588667638\",\"status\":\"found\",\"value\":\"1588667638\"},\"signature_present\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Signature: /s/ Sarah Chen, MD  (electronically signed 11/18/2026)\",\"status\":\"found\",\"value\":\"yes\"},\"has_changes\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Item: Lightweight wheelchair   HCPCS: K0003   Qty: 1\",\"status\":\"found\",\"value\":\"no\"},\"changes_initialled_dated\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"}}",
+ "thinking": ""
+}

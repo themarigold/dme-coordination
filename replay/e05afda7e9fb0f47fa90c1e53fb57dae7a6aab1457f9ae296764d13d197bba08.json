@@ -1,0 +1,11 @@
+{
+ "call": "read_visit_note",
+ "effort": "low",
+ "input_tokens": 4000,
+ "model": "claude-opus-5-5",
+ "output_tokens": 528,
+ "prompt_hash": "69eae801f5353043e5cc4481d1c1182bb930cc9a28087c0ec8fad991008e4069",
+ "stop_reason": "end_turn",
+ "text": "{\"beneficiary_name\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Patient: Eleanor Martinez, 72F.\",\"status\":\"found\",\"value\":\"Eleanor Martinez\"},\"criterion_a\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"needs help to toilet and bathe because of limited mobility.\",\"status\":\"found\",\"value\":\"documented\"},\"criterion_b\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Trialed a cane and a front-wheeled walker; neither lets her move safely between rooms\",\"status\":\"found\",\"value\":\"documented\"},\"criterion_c\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"missing\"},\"criterion_d\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Patient will use it daily in the home\",\"status\":\"found\",\"value\":\"documented\"},\"criterion_e\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"is\\n  willing to use it.\",\"status\":\"found\",\"value\":\"documented\"},\"criterion_f\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Upper-extremity strength 5/5 bilaterally; able to self-propel safely.\",\"status\":\"found\",\"value\":\"documented\"},\"criterion_g\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"missing\"},\"weight_lb\":{\"evidence_turn_id\":\"doc\",\"evidence_quote\":\"Weight: 158 lb.\",\"status\":\"found\",\"value\":\"158\"}}",
+ "thinking": ""
+}

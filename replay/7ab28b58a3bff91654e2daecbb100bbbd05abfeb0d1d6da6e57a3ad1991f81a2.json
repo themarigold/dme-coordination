@@ -1,0 +1,11 @@
+{
+ "call": "check_safety_and_conditions",
+ "effort": "low",
+ "input_tokens": 5438,
+ "model": "claude-opus-5-5",
+ "output_tokens": 551,
+ "prompt_hash": "6acfd6781723b94a5eea993a9f8bbcca3436188aea6f33071bdb89ee52f17e54",
+ "stop_reason": "end_turn",
+ "text": "{\"opts_out\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"wants_person\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"deceased\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"hospitalised\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"hospice\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"medicare_advantage\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"medicaid_or_msp\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"needs_info\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"needs_info_item\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"collects_coinsurance_at_delivery\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"full_price_or_no_assignment\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"abn_requested\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"},\"other_condition\":{\"evidence_turn_id\":\"\",\"evidence_quote\":\"\",\"status\":\"not_stated\",\"value\":\"\"}}",
+ "thinking": ""
+}
