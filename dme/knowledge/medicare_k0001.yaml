@@ -1,0 +1,189 @@
+# Medicare rules for one standard manual wheelchair (K0001), Original Medicare Part B, read by the rules
+# (cost, code table, thresholds) and the prompts (knowledge.rule_slice). Each entry carries its citation
+# and how far it was checked:
+#   verified: checked        -> the quoted wording was checked against the source
+#   verified: not_rechecked  -> from background research, not re-checked; treat as unverified
+#   verified: design         -> a decision of this design, not a Medicare rule
+version: 1
+entries:
+  - id: swo_elements
+    topics: [order, pcp]
+    citation: "42 CFR 410.38(d)(1) (standard written order elements); design rule: the packet gate"
+    verified: not_rechecked
+    elements:
+      - "beneficiary name or Medicare Beneficiary Identifier (MBI)"
+      - "general description of the item (or HCPCS code / brand / model)"
+      - "quantity to be dispensed"
+      - "order date"
+      - "treating practitioner name or NPI"
+      - "treating practitioner signature"
+
+  - id: order_corrections
+    topics: [order, pcp]
+    citation: "CGS Manual Wheelchair Bases documentation checklist, rev. 2026-10-02"
+    verified: checked
+    rule: >-
+      A change to a written order must be initialed/signed and dated by the ordering
+      practitioner, or a new order signed. A phone confirmation alone does not correct
+      an order.
+
+  - id: code_table
+    topics: [order, pcp, supplier]
+    citation: "HCPCS Level II K0001-K0007 descriptors; CGS Manual Wheelchair Bases documentation checklist, rev. 2026-10-02 (K0006 weight wording)"
+    verified: not_rechecked
+    rule: >-
+      Codes map to items only through this table. A code not in the table (including
+      OCR-like misreads such as "KOOO1") is unknown: ask the PCP office.
+    codes:
+      K0001:
+        item: "standard wheelchair"
+        synonyms: ["standard manual wheelchair", "standard wheelchair", "manual wheelchair, standard"]
+        requested: true
+        relation: "the item requested"
+      K0002:
+        item: "standard hemi (low seat) wheelchair"
+        requested: false
+        relation: "different item (not what was requested)"
+      K0003:
+        item: "lightweight wheelchair"
+        requested: false
+        relation: "different item (not what was requested)"
+      K0004:
+        item: "high strength, lightweight wheelchair"
+        requested: false
+        relation: "different item (not what was requested)"
+      K0005:
+        item: "ultralightweight wheelchair"
+        requested: false
+        relation: "different item (not what was requested)"
+      K0006:
+        item: "heavy duty wheelchair"
+        requested: false
+        relation: "different item (not what was requested)"
+        note: "beneficiary weighs more than 250 pounds"
+      K0007:
+        item: "extra heavy duty wheelchair"
+        requested: false
+        relation: "different item (not what was requested)"
+        note: "beneficiary weighs more than 300 pounds"
+
+  - id: coverage_criteria
+    topics: [visit_note]
+    citation: "LCD L33788 Manual Wheelchair Bases, coverage criteria A-G; policy article A52497"
+    verified: not_rechecked
+    rule: >-
+      Covered when A, B, C, D and E are met and either F or G is met. This design
+      requires A, B, D, E and (F or G) in the visit note before the packet is sent;
+      C may instead be met at acceptance by the supplier's home assessment.
+    criteria:
+      a: "The beneficiary has a mobility limitation that significantly impairs participation in one or more mobility-related activities of daily living (toileting, feeding, dressing, grooming, bathing) in customary locations in the home."
+      b: "The mobility limitation cannot be sufficiently resolved by an appropriately fitted cane or walker."
+      c: "The home provides adequate access between rooms, maneuvering space and surfaces for the manual wheelchair provided."
+      d: "Use of a manual wheelchair will significantly improve participation in those activities, and the beneficiary will use it regularly in the home."
+      e: "The beneficiary has not expressed an unwillingness to use the manual wheelchair in the home."
+      f: "The beneficiary has sufficient upper-extremity function and other physical and mental capability to safely self-propel the wheelchair in the home during a typical day."
+      g: "The beneficiary has a caregiver who is available, willing and able to provide assistance with the wheelchair."
+
+  - id: home_assessment
+    topics: [visit_note, supplier]
+    citation: "Policy article A52497 (criterion C)"
+    verified: checked
+    rule: >-
+      Criterion C must be fully documented in the medical record or elsewhere by the
+      supplier; the supplier may use information provided by the beneficiary.
+
+  - id: weight_threshold
+    topics: [visit_note, order]
+    citation: "CGS Manual Wheelchair Bases documentation checklist, rev. 2026-10-02"
+    verified: checked
+    k0006_over_lb: 250
+    rule: >-
+      A beneficiary who weighs more than 250 pounds falls under K0006, a different
+      item. The visit note must state the weight.
+
+  - id: weight_threshold_k0007
+    topics: [visit_note, order]
+    citation: "HCPCS K0007 descriptor (extra heavy duty wheelchair)"
+    verified: not_rechecked
+    k0007_over_lb: 300
+    rule: >-
+      More than 300 pounds falls under K0007. Only the 250 lb (K0006) wording was
+      checked; the rules escalate anything over 250 lb either way.
+
+  - id: rental_cost
+    topics: [cost, patient]
+    citation: "Design rule: cost figures (DMEPOS fee schedule allowed amount; capped rental); CMS 2026 Part B deductible"
+    verified: not_rechecked
+    monthly_allowed_months_1_3: "34.27"
+    later_month_fraction: "0.75"  # months 4-13 are allowed at 75% of the month 1-3 amount
+    rental_months: 13             # capped rental: she owns the chair after 13 paid months
+    coinsurance: "0.20"
+    part_b_deductible:
+      2026: {amount: "283", assumed: false}
+      2027: {amount: "283", assumed: true, note: "2027 not announced; assumed equal to 2026"}
+    rule: >-
+      Capped rental billed monthly. Each calendar year the Part B deductible applies
+      first, then 20% coinsurance on the allowed amount.
+
+  - id: assignment
+    topics: [supplier, cost]
+    citation: "CGS Jurisdiction B supplier manual, chapter 6"
+    verified: checked
+    rule: >-
+      An assigning supplier must attempt to collect the coinsurance and deductible
+      (normally at or after delivery). Only a non-assigned supplier may request
+      payment in full.
+
+  - id: abn
+    topics: [supplier]
+    citation: "Design rule: always escalate on an ABN request"
+    verified: design
+    rule: >-
+      A supplier asking the beneficiary to sign an Advance Beneficiary Notice signals
+      it expects Medicare may deny the claim. Any ABN request goes to a human.
+
+  - id: supplier_phone_contact
+    topics: [supplier, patient]
+    citation: "42 CFR 424.57(c)(11)"
+    verified: checked
+    rule: >-
+      A supplier may not telephone a beneficiary about a covered item without her
+      written permission, unless it has furnished her an item before. She agrees in
+      writing before the supplier is sent the order packet.
+
+  - id: supplier_duties
+    topics: [supplier]
+    citation: "42 CFR 424.57(c)(12)"
+    verified: checked
+    rule: >-
+      The supplier delivers the item, instructs the beneficiary on its use, and keeps
+      proof of delivery. We record the supplier's delivery confirmation; we never sign
+      proof of delivery.
+
+  - id: wopd
+    topics: [order]
+    citation: "CMS Required Face-to-Face Encounter and Written Order Prior to Delivery List (effective 2026-10-28), checked 2026-11-17"
+    verified: checked
+    codes_on_list: [K0002, K0003, K0004, K0005, K0006, K0007, E1161]
+    rule: >-
+      Manual wheelchair codes on the list (face-to-face encounter and written order
+      before delivery): K0002-K0007 and E1161. K0001 is not on it. This design requires
+      the signed written order before the packet is sent anyway (stricter than required).
+
+  - id: medicaid_msp
+    topics: [patient, cost]
+    citation: "CMS MLN: QMB billing prohibition"
+    verified: not_rechecked
+    rule: >-
+      A beneficiary in the QMB program may not be billed Medicare cost-sharing. If she
+      gets help from Illinois Medicaid or a Medicare Savings Program (or is not sure),
+      cost figures and the handoff wait for a human.
+
+  - id: safety_signals
+    topics: [safety, patient]
+    citation: "Design rule: safety signals, and the cases that always escalate"
+    verified: design
+    rule: >-
+      Signals that always go to a human: opts out of contact, wants a person, reported
+      deceased, hospitalised, in hospice (hospice supplies related DME), on a Medicare
+      Advantage plan, receives Medicaid or a Savings Program.

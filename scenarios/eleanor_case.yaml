@@ -1,0 +1,15 @@
+# Intake, exactly as given in the take-home. Nothing else is known at start:
+# no address, phone, date of birth, Medicare ID or deductible status. The patient
+# thread collects those; in the mock world, Eleanor's replies supply them.
+case_id: eleanor-martinez
+facts:
+  patient.name: "Eleanor Martinez"
+  patient.age: "72"
+  patient.coverage: "original_medicare_part_b"
+  patient.medigap: "no"
+  order.item_requested: "standard manual wheelchair"
+  order.hcpcs_expected: "K0001"
+  pcp.name: "Dr. Sarah Chen"
+  pcp.practice: "Sunrise Family Medicine, Chicago IL"
+  pcp.phone: "(312) 555-0198"
+  pcp.visit: "completed 3 days before start; verbal order noted in chart; written order not yet submitted"

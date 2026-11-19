@@ -1,0 +1,199 @@
+# Happy path: nothing goes wrong. Supplier 1 qualifies as primary and 2 as warm backup; the PCP office
+# sends a correct order and visit note; re-confirm, permission, packet, acceptance and delivery follow.
+# The only human touches are the two approval gates, which start gated.
+name: eleanor_happy
+case_file: scenarios/eleanor_case.yaml
+start: "2026-12-01T09:00:00-06:00"
+seed: 7
+expected:
+  terminal_state: delivered
+  human_touches:
+    - "approval_required:criteria_acceptance"
+    - "approval_required:supplier_handoff"
+
+rows:
+  - counterparty: patient
+    action: first_contact
+    attempt: 1
+    delay: 15m
+    event: reply
+    turns:
+      - {turn_id: t1, speaker: us, text: "Hello, this is Sam from Mira Mace, calling for Dr. Chen's office about your wheelchair. Could you tell me your full name and date of birth?"}
+      - {turn_id: t2, speaker: patient, text: "Eleanor Martinez, born March 3, 1954."}
+      - {turn_id: t3, speaker: us, text: "May we arrange the chair for you and share your details with equipment suppliers?"}
+      - {turn_id: t4, speaker: patient, text: "Yes, go ahead, you can share them."}
+      - {turn_id: t5, speaker: us, text: "What address should it go to, and will you use it inside your home?"}
+      - {turn_id: t6, speaker: patient, text: "4512 N Kedzie Ave, Apartment 2, Chicago 60625. Yes, inside the apartment. It's all one floor with wide doorways."}
+      - {turn_id: t7, speaker: us, text: "Any wheelchair in the last five years? And do you get help paying Medicare costs from Illinois Medicaid or a Medicare Savings Program?"}
+      - {turn_id: t8, speaker: patient, text: "No wheelchair before. And no, I don't get any help like that."}
+      - {turn_id: t9, speaker: us, text: "Where did we get this number, and may we call and text you here? And are you comfortable sharing your Medicare number with the supplier?"}
+      - {turn_id: t10, speaker: patient, text: "Dr. Chen's office has this number. Calls and texts are fine. The Medicare number is 1EG4-TE5-MK73, you can share it."}
+    expected_reads:
+      primary:
+        identity_name: [t2, "Eleanor Martinez", "Eleanor Martinez"]
+        identity_dob: [t2, "born March 3, 1954", "1954-03-03"]
+        consent_proceed: [t4, "Yes, go ahead", "yes"]
+        consent_share_with_suppliers: [t4, "you can share them", "yes"]
+        address: [t6, "4512 N Kedzie Ave, Apartment 2, Chicago 60625", "4512 N Kedzie Ave, Apartment 2, Chicago, IL 60625"]
+        zip: [t6, "60625", "60625"]
+        in_home_use: [t6, "Yes, inside the apartment", "yes"]
+        home_layout: [t6, "It's all one floor with wide doorways", "one floor, wide doorways"]
+        prior_wheelchair_5y: [t8, "No wheelchair before", "no"]
+        medicaid_or_msp: [t8, "no, I don't get any help like that", "no"]
+        phone_source: [t10, "Dr. Chen's office has this number", "Dr. Chen's office"]
+        consent_calls_texts: [t10, "Calls and texts are fine", "yes"]
+        medicare_id: [t10, "The Medicare number is 1EG4-TE5-MK73", "1EG4-TE5-MK73"]
+        medicare_id_ok_to_share: [t10, "you can share it", "yes"]
+
+  - {counterparty: pcp, action: order_request, attempt: 1, event: never}
+  - counterparty: pcp
+    action: confirm_call
+    attempt: 1
+    delay: 10m
+    event: reply
+    turns:
+      - {turn_id: t1, speaker: us, text: "Hi, this is Sam from Mira Mace. Did you receive our fax this morning asking for the standard written order and the visit note for Eleanor Martinez?"}
+      - {turn_id: t2, speaker: pcp_office, text: "Yes, we got it. This is Maria. Dr. Chen will sign it today and we'll fax both over."}
+    expected_reads:
+      primary:
+        outcome: [t2, "Yes, we got it", "received"]
+        contact_name: [t2, "This is Maria", "Maria"]
+  - counterparty: pcp
+    action: confirm_call
+    attempt: 1
+    delay: 3h
+    event: document
+    payload: {doc_type: order}
+    text: |
+      SUNRISE FAMILY MEDICINE - STANDARD WRITTEN ORDER (DME)
+      Patient: Eleanor Martinez    MBI: 1EG4-TE5-MK73
+      Order date: 12/01/2026
+      Item: Standard manual wheelchair   HCPCS: K0001   Qty: 1
+      Ordering practitioner: Sarah Chen, MD   NPI: 1588667638
+      Signature: /s/ Sarah Chen, MD
+    expected_reads:
+      primary:
+        beneficiary_name: [doc, "Patient: Eleanor Martinez", "Eleanor Martinez"]
+        item_description: [doc, "Item: Standard manual wheelchair", "Standard manual wheelchair"]
+        hcpcs_code: [doc, "HCPCS: K0001", "K0001"]
+        quantity: [doc, "Qty: 1", "1"]
+        order_date: [doc, "Order date: 12/01/2026", "2026-12-01"]
+        practitioner_name: [doc, "Ordering practitioner: Sarah Chen, MD", "Sarah Chen, MD"]
+        signature_present: [doc, "Signature: /s/ Sarah Chen, MD", "yes"]
+  - counterparty: pcp
+    action: confirm_call
+    attempt: 1
+    delay: 10m
+    event: document
+    payload: {doc_type: visit_note}
+    text: |
+      SUNRISE FAMILY MEDICINE - OFFICE VISIT 11/27/2026
+      Patient: Eleanor Martinez, 72F.  Weight: 158 lb.
+      Needs help to toilet and bathe because of limited mobility in her apartment. A cane and a walker were
+      tried; neither lets her move safely between rooms. She will use a standard manual wheelchair daily in
+      the home and is willing to use it. Able to self-propel safely.
+    expected_reads:
+      primary:
+        beneficiary_name: [doc, "Patient: Eleanor Martinez", "Eleanor Martinez"]
+        criterion_a: [doc, "Needs help to toilet and bathe because of limited mobility", "documented"]
+        criterion_b: [doc, "A cane and a walker were tried; neither lets her move safely between rooms", "documented"]
+        criterion_d: [doc, "She will use a standard manual wheelchair daily", "documented"]
+        criterion_e: [doc, "is willing to use it", "documented"]
+        criterion_f: [doc, "Able to self-propel safely", "documented"]
+        weight_lb: [doc, "Weight: 158 lb", "158"]
+  - {counterparty: pcp, action: supplier_chosen, attempt: default, event: never}
+  - {counterparty: pcp, action: nudge, attempt: default, event: never}
+
+  - counterparty: "supplier:1"
+    action: qualify_call
+    attempt: 1
+    delay: 15m
+    event: reply
+    turns:
+      - {turn_id: t1, speaker: us, text: "Hi, this is Sam from Mira Mace, arranging a standard manual wheelchair, K0001, for an Original Medicare patient in ZIP 60625. Are you taking new Medicare patients, do you bill Medicare for the K0001, and is it in stock?"}
+      - {turn_id: t2, speaker: supplier_rep, text: "Yes, yes and yes. This is Kevin."}
+      - {turn_id: t3, speaker: us, text: "Do you deliver to 60625, will you accept assignment for all 13 rental months, and would she need to sign an ABN?"}
+      - {turn_id: t4, speaker: supplier_rep, text: "We deliver to 60625 and we accept assignment for all 13 months. No ABN. We could deliver as soon as next Monday."}
+      - {turn_id: readback, speaker: us, text: "Let me read that back: new Medicare patients, you bill Medicare for K0001, in stock, deliver to 60625, assignment for all 13 months, no ABN, earliest next Monday, and you're Kevin. Right?"}
+      - {turn_id: t6, speaker: supplier_rep, text: "That's right."}
+    expected_reads:
+      primary:
+        call_outcome: [t2, "Yes, yes and yes", "answered"]
+        accepting_new_medicare: [t2, "Yes, yes and yes", "yes"]
+        bills_medicare_k0001: [t2, "Yes, yes and yes", "yes"]
+        k0001_in_stock: [t2, "Yes, yes and yes", "yes"]
+        delivers_to_zip: [t4, "We deliver to 60625", "yes"]
+        accepts_assignment_all_months: [t4, "we accept assignment for all 13 months", "yes"]
+        abn_required: [t4, "No ABN", "no"]
+        earliest_delivery: [t4, "next Monday", "next Monday", "firm"]
+        rep_name: [t2, "This is Kevin", "Kevin"]
+        readback_confirmed: [t6, "That's right", "yes"]
+  - counterparty: "supplier:2"
+    action: qualify_call
+    attempt: 1
+    delay: 15m
+    event: reply
+    turns:
+      - {turn_id: t1, speaker: us, text: "Hi, this is Sam from Mira Mace, arranging a standard manual wheelchair, K0001, for an Original Medicare patient in ZIP 60625. Are you taking new Medicare patients, do you bill Medicare for the K0001, and is it in stock?"}
+      - {turn_id: t2, speaker: supplier_rep, text: "We are, we do, and it's in stock. I'm Dana."}
+      - {turn_id: t3, speaker: us, text: "Do you deliver to 60625, will you accept assignment for all 13 rental months, and would she need to sign an ABN?"}
+      - {turn_id: t4, speaker: supplier_rep, text: "60625 is in our area, we accept assignment for the full 13 months, and no ABN. Earliest delivery is next Tuesday."}
+      - {turn_id: readback, speaker: us, text: "Let me read that back: new Medicare patients, bill Medicare for K0001, in stock, deliver to 60625, assignment for all 13 months, no ABN, earliest next Tuesday, and you're Dana. Correct?"}
+      - {turn_id: t6, speaker: supplier_rep, text: "Correct."}
+    expected_reads:
+      primary:
+        call_outcome: [t2, "We are", "answered"]
+        accepting_new_medicare: [t2, "We are", "yes"]
+        bills_medicare_k0001: [t2, "we do", "yes"]
+        k0001_in_stock: [t2, "it's in stock", "yes"]
+        delivers_to_zip: [t4, "60625 is in our area", "yes"]
+        accepts_assignment_all_months: [t4, "we accept assignment for the full 13 months", "yes"]
+        abn_required: [t4, "no ABN", "no"]
+        earliest_delivery: [t4, "next Tuesday", "next Tuesday", "firm"]
+        rep_name: [t2, "I'm Dana", "Dana"]
+        readback_confirmed: [t6, "Correct", "yes"]
+
+  - counterparty: "supplier:1"
+    action: reconfirm_call
+    attempt: 1
+    delay: 10m
+    event: reply
+    turns:
+      - {turn_id: t1, speaker: us, text: "Hi Kevin, Sam from Mira Mace. Before we send the packet: still in stock, still delivering to 60625, still accepting assignment for all 13 months?"}
+      - {turn_id: t2, speaker: supplier_rep, text: "Still in stock, still deliver to 60625, and yes on assignment."}
+    expected_reads:
+      primary:
+        call_outcome: [t2, "Still in stock", "answered"]
+        k0001_in_stock: [t2, "Still in stock", "yes"]
+        delivers_to_zip: [t2, "still deliver to 60625", "yes"]
+        accepts_assignment_all_months: [t2, "yes on assignment", "yes"]
+  - {counterparty: patient, action: supplier_will_call, attempt: 1, event: never}
+  - {counterparty: patient, action: esign_supplier_permission, attempt: 1, delay: 1h, event: esign, payload: {document: supplier_permission}}
+  - {counterparty: "supplier:1", action: send_packet, attempt: 1, delay: 2h, event: accept, payload: {home_assessment_recorded: "yes", same_or_similar_clear: "yes"}}
+  - {counterparty: "supplier:1", action: "after:accept", attempt: 1, delay: 1bd, event: scheduled, payload: {date: "2026-12-08"}}
+  - {counterparty: "supplier:1", action: "after:scheduled", attempt: 1, delay: 2bd, event: delivered}
+  - counterparty: patient
+    action: delivery_check
+    attempt: 1
+    delay: 1h
+    event: reply
+    turns:
+      - {turn_id: t1, speaker: patient, text: "It arrived today and it fits fine. They showed me how to use it and left the repair number."}
+    expected_reads:
+      primary:
+        delivery_received: [t1, "It arrived today", "yes"]
+        fit_ok: [t1, "it fits fine", "yes"]
+        shown_how_to_use: [t1, "They showed me how to use it", "yes"]
+        has_repair_number: [t1, "left the repair number", "yes"]
+
+human_decisions:
+  - {reason_code: approval_required, nth: 1, approval_type: criteria_acceptance, expected_action: proceed_with_pending, decision: approve}
+  - {reason_code: approval_required, nth: 2, approval_type: supplier_handoff, expected_action: proceed_with_pending, decision: approve}
+
+scripted_proposals:
+  - reason_code: approval_required
+    nth: 1
+    proposal: {action: proceed_with_pending, param_party: "", param_supplier: "", param_items: [], param_question: "", param_time_phrase: "", param_reason: "", why: "The visit note documents A, B, D, E and F; weight 158 lb.", facts_used: [{fact_id: note.criterion_b, value: documented}, {fact_id: note.weight_lb, value: "158"}]}
+  - reason_code: approval_required
+    nth: 2
+    proposal: {action: proceed_with_pending, param_party: "", param_supplier: "supplier:1", param_items: [], param_question: "", param_time_phrase: "", param_reason: "", why: "Supplier 1 re-confirmed and Eleanor signed permission.", facts_used: [{fact_id: supplier.1.call_permission, value: "yes"}]}
