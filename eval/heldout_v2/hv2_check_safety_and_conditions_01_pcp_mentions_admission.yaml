@@ -1,0 +1,49 @@
+item_id: hv2_check_safety_and_conditions_01_pcp_mentions_admission
+reader: check_safety_and_conditions
+goal: >-
+  Safety and conditions check on Sunrise Family Medicine's reply to our follow-up call about
+  Eleanor Martinez's written order and visit note (K0001 standard manual wheelchair).
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.coverage: original_medicare_part_b
+  pcp.practice: Sunrise Family Medicine, Chicago IL
+  pcp.request_status: confirmed
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hello, this is Mira Mace following up on the written order and visit note for Eleanor
+      Martinez's standard wheelchair. Has Dr. Chen had a chance to sign it?
+  - turn_id: t2
+    speaker: pcp_office
+    text: >-
+      Hi, this is Rosa. Not yet, and I should tell you, Mrs. Martinez was admitted to St. Brigid's
+      on Sunday after a fall, so Dr. Chen wants to wait and see what the hospital recommends before
+      she signs anything. Her coverage is still regular Medicare, not one of those Advantage plans,
+      I double-checked when I updated her chart.
+  - turn_id: t3
+    speaker: us
+    text: Thank you for letting us know. We'll hold on our side.
+  - turn_id: t4
+    speaker: pcp_office
+    text: Sure. I'll call you when she's discharged.
+labels:
+  hospitalised: {status: found, value: "yes"}
+  medicare_advantage: {status: found, value: "no"}
+  deceased: {status: not_stated}
+  hospice: {status: not_stated}
+  opts_out: {status: not_stated}
+  wants_person: {status: not_stated}
+  medicaid_or_msp: {status: not_stated}
+  needs_info: {status: not_stated}
+  other_condition: {status: not_stated}
+tags: [unsolicited, hospital, negated_signal, pcp_source]
+notes: |-
+  EVIDENCE hospitalised t2 "Mrs. Martinez was admitted to St. Brigid's on Sunday after a fall"
+  EVIDENCE medicare_advantage t2 "not one of those Advantage plans"
+  The hospital admission comes from the PCP office, unprompted (we asked about the signature), so
+  it is an unsolicited safety signal. "I'll call you when she's discharged" confirms she is still
+  in. Medicare Advantage is mentioned only to be negated; the label is the absent class (found
+  "no" and not_stated grade the same on this negative-equivalent field), so reading it as a
+  positive signal is a false alarm. "after a fall" is not hospice or death. The PCP's wait for
+  hospital advice is a clinical hold, not a supplier condition, so other_condition is absent.

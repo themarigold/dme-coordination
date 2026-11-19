@@ -1,0 +1,64 @@
+item_id: hv2_read_supplier_call_04_wrong_number_household
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 6 (Roosevelt Medical Supply Co) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60630: new Medicare patients, bills
+  Medicare for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months,
+  ABN, earliest delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60630"
+  patient.coverage: original_medicare_part_b
+  supplier.6.name: Roosevelt Medical Supply Co
+  supplier.6.phone: (312) 555-0319
+  supplier.6.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, is this Roosevelt Medical Supply? I'm calling from Mira Mace about a standard manual
+      wheelchair for a Medicare patient.
+  - turn_id: t2
+    speaker: supplier_rep
+    text: Hello? Hold on. FRANK, turn that down! Sorry, who did you want?
+  - turn_id: t3
+    speaker: us
+    text: Roosevelt Medical Supply. I'm calling about a wheelchair for a Medicare patient.
+  - turn_id: t4
+    speaker: supplier_rep
+    text: >-
+      No, honey, this is a house. You've got the wrong number. People call here for that place
+      every so often, I think they had this number years ago.
+  - turn_id: t5
+    speaker: us
+    text: Oh, I'm sorry to bother you.
+  - turn_id: t6
+    speaker: supplier_rep
+    text: >-
+      It's no bother. Say, you need a wheelchair? There's one in our garage from when my mother was
+      alive, it's in good shape. I could bring it by Saturday if she's close, I'm over near Taylor
+      Street.
+  - turn_id: t7
+    speaker: us
+    text: >-
+      That's very kind, but we need to go through a Medicare supplier. Thank you, and sorry again
+      for the trouble.
+  - turn_id: t8
+    speaker: supplier_rep
+    text: Okay, good luck to her, hon.
+labels:
+  call_outcome: {status: found, value: wrong_number}
+  accepting_new_medicare: {status: not_stated}
+  k0001_in_stock: {status: not_stated}
+  delivers_to_zip: {status: not_stated}
+  earliest_delivery: {status: not_stated}
+  readback_confirmed: {status: not_stated}
+  needs_info: {status: not_stated}
+tags: [wrong_number, messy, never_answered, distractor]
+notes: |-
+  EVIDENCE call_outcome t4 "You've got the wrong number"
+  The person who answers is a private household (speaker role supplier_rep only because that is
+  the role of whoever answers a supplier call). The garage wheelchair (t6) is not supplier stock,
+  "bring it by Saturday" is not a supplier delivery date, and being "over near Taylor Street" says
+  nothing about delivering to 60630. Reading any qualification field from t6 is the failure this
+  item tests. rep_name is deliberately unlabelled (no rep exists on a wrong number).

@@ -1,0 +1,43 @@
+item_id: hv2_read_patient_reply_01_availability_cost_stop_texts
+reader: read_patient_reply
+goal: >-
+  Text to Eleanor Martinez asking which days and times work for the supplier to deliver her
+  standard manual wheelchair.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.consent_calls_texts: "yes"
+  handoff.supplier: supplier:5
+  supplier.5.name: ChicagoLand Durable Medical
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi Eleanor, this is Mira Mace about your wheelchair. What days and times work best for the
+      supplier to bring it to your home?
+  - turn_id: t2
+    speaker: patient
+    text: >-
+      tuesdays after 2 are best, mornings i have my exercise class at the park district. how much
+      is this going to cost me in the end?? nobody has told me a number. and please stop texting
+      me about this, it is too many messages.
+labels:
+  availability: {status: found, value: Tuesdays after 2}
+  consent_calls_texts: {status: found, value: "no"}
+  medicaid_or_msp: {status: not_stated}
+  delivery_received: {status: not_stated}
+intents: [gives_fact, cost_question, opt_out]
+tags: [score_intents, unsolicited, mixed_intents, buried_opt_out]
+notes: |-
+  EVIDENCE availability t2 "tuesdays after 2 are best"
+  EVIDENCE consent_calls_texts t2 "please stop texting me about this"
+  EVIDENCE intent:gives_fact t2 "tuesdays after 2 are best"
+  EVIDENCE intent:cost_question t2 "how much is this going to cost me in the end??"
+  EVIDENCE intent:opt_out t2 "please stop texting me about this"
+  One text, three intents: availability (gives_fact), a cost question, and an opt-out buried at
+  the end. A free-text request to stop contact is an opt-out; "stop texting me
+  about this" is a plain opt-out. It also withdraws her earlier consent to calls and texts about
+  this order (context_facts records the earlier "yes"), so consent_calls_texts is found "no". The
+  opt-out was not asked for (we asked about delivery times), so the item is tagged unsolicited.
+  The availability label is her phrase "Tuesdays after 2"; the "mornings" clause says when she is
+  NOT free and is not part of the window (commitment not scored). Medicaid and delivery were never
+  raised, so both are not_stated.

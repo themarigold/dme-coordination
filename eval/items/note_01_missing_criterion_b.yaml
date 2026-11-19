@@ -1,0 +1,51 @@
+item_id: note_01_missing_criterion_b
+reader: read_visit_note
+goal: >-
+  Read Dr. Sarah Chen's visit note for Eleanor Martinez for the Medicare manual wheelchair coverage
+  criteria A through G and her weight in pounds.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.age: "72"
+  order.hcpcs_expected: K0001
+  note.version: "1"
+text: |
+  SUNRISE FAMILY MEDICINE -- OFFICE VISIT NOTE
+  Pt: Eleanor Martinez   DOB 03/14/1954   DOS 11/13/2026
+  Provider: Sarah Chen, MD
+
+  CC: f/u knee OA; "I can't get around the apartment anymore"
+
+  HPI: 72 y/o F w/ severe bilat knee OA and h/o L hip fx (2024). Reports she can no longer get from
+  her bedroom to the bathroom w/o stopping to rest and holding onto furniture. Has stopped cooking
+  because she cannot stand at the stove long enough. 2 near-falls in the kitchen this month. Pt
+  states she wants a wheelchair to use inside her apartment and is willing to use it every day.
+
+  Vitals: BP 138/82  HR 74  Wt 158 lb  Ht 5'3"  SpO2 97% RA
+
+  Exam: Antalgic gait, crepitus both knees, limited ROM. BUE strength 5/5, grip intact bilat. A&O x3,
+  follows commands. Propelled a clinic wheelchair ~50 ft independently and safely, turning without
+  help.
+
+  Home: 2nd-floor apt in elevator bldg. Doorways measured 32 in., no thresholds or throw rugs,
+  hard floors, bathroom has room to turn a chair.
+
+  A/P:
+  1. Mobility limitation that significantly impairs her ability to do MRADLs (toileting, bathing,
+     meal prep) in customary locations in the home.
+  2. Manual w/c (K0001) will significantly improve her ability to do MRADLs in the home; she will
+     use it on a regular basis in the home.
+  3. Sufficient UE function and cognition to safely self-propel in the home during a typical day.
+  Verbal order for standard manual wheelchair given today. RTC 3 mo.
+labels:
+  criterion_a: {status: found, value: documented}
+  criterion_b: {status: not_stated, value: missing}
+  criterion_c: {status: found, value: documented}
+  criterion_d: {status: found, value: documented}
+  criterion_e: {status: found, value: documented}
+  criterion_f: {status: found, value: documented}
+  weight_lb: {status: found, value: "158"}
+tags: [missing_criterion]
+notes: >-
+  Criterion B (a cane or walker cannot resolve the limitation) is never addressed: no cane or walker
+  is mentioned anywhere; holding onto furniture is not a cane/walker trial. Criterion G deliberately
+  unlabelled (no caregiver is mentioned, but F is documented so G is moot).

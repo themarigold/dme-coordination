@@ -1,0 +1,32 @@
+item_id: sup_07_call_back_later
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 7 (Halsted Home Health Supply) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare
+  for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest
+  delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.7.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, I'm calling about a Medicare wheelchair rental. Could I speak with whoever handles new
+      Medicare orders?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      That'd be Marcus and he's at lunch. Try him again after 2, he's usually back by then. I can't do
+      the Medicare stuff, sorry.
+labels:
+  call_outcome: {status: found, value: call_back_later}
+  call_back_after: {status: found, value: after 2}
+  k0001_in_stock: {status: not_stated}
+  accepting_new_medicare: {status: not_stated}
+tags: [clean, call_outcome]
+notes: >-
+  Someone answered but could not help and named a time to call back -> call_back_later (not
+  answered). No qualification question was answered. Commitment of the callback time is not scored.

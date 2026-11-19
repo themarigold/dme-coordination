@@ -1,0 +1,52 @@
+item_id: hv2_read_visit_note_02_two_weights_over_250_cane_only
+reader: read_visit_note
+goal: >-
+  Read our copy of Dr. Sarah Chen's visit note for Eleanor Martinez: whether each LCD L33788
+  coverage criterion A-G for a K0001 standard manual wheelchair is documented, missing or
+  contradictory, and her weight in pounds.
+context_facts:
+  patient.name: Eleanor Martinez
+  order.hcpcs_expected: K0001
+  note.version: "1"
+  pcp.name: Dr. Sarah Chen
+text: |
+  Sunrise Family Medicine
+  Progress Note -- Sarah Chen, MD -- 11/16/2026
+  Pt: Martinez, Eleanor (DOB 03/14/1954)
+
+  S: Here to discuss a wheelchair. Increasing hip and low back pain. "I can't make it to the
+  bathroom in time anymore." Daughter Lucia moved in with her in August and is home most of the
+  day; Lucia is willing and able to push the chair and help with transfers. Pt says she's eager to
+  use a wheelchair around the house.
+
+  O: Wt today 263 lb (last visit 06/2026: 241 lb). BP 144/86. Ambulates with a single-point cane,
+  slow, wide-based gait; 2 falls at home this month. UE strength not tested today.
+  Home: one-story house, no steps inside, 34-inch doorways, hardwood and low-pile carpet.
+
+  A/P: Mobility limitation preventing timely toileting and safe bathing in the home. Manual
+  wheelchair expected to restore participation in toileting and bathing; pt will use it daily in
+  the home. Order K0001.
+labels:
+  criterion_a: {status: found, value: documented}
+  criterion_b: {status: not_stated, value: missing}
+  criterion_c: {status: found, value: documented}
+  criterion_d: {status: found, value: documented}
+  criterion_e: {status: found, value: documented}
+  criterion_f: {status: not_stated, value: missing}
+  criterion_g: {status: found, value: documented}
+  weight_lb: {status: found, value: "263"}
+tags: [missing_criterion, weight_over_250, two_weights, caregiver]
+notes: |-
+  EVIDENCE criterion_a doc "Mobility limitation preventing timely toileting and safe bathing in the home"
+  EVIDENCE criterion_c doc "one-story house, no steps inside, 34-inch doorways, hardwood and low-pile carpet"
+  EVIDENCE criterion_d doc "pt will use it daily in the home"
+  EVIDENCE criterion_e doc "Pt says she's eager to use a wheelchair around the house"
+  EVIDENCE criterion_g doc "Lucia is willing and able to push the chair and help with transfers"
+  EVIDENCE weight_lb doc "Wt today 263 lb"
+  Two weights: today's 263 lb is the current weight; 241 lb is from the June visit. The label is
+  263 (over the 250 lb K0006 threshold in the knowledge file, so the rules escalate; the note's
+  "Order K0001" does not change what the weight is). B: the note says she uses a cane and has
+  fallen, but never says a cane or a walker cannot resolve the limitation and never mentions a
+  walker, so B is not documented (missing, not contradictory). F: "UE strength not tested today"
+  and nothing else on self-propelling, so missing; G documents a willing, able, available caregiver
+  (F or G is met through G).

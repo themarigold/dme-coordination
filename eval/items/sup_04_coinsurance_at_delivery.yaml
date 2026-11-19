@@ -1,0 +1,38 @@
+item_id: sup_04_coinsurance_at_delivery
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 4 (Northside CarePlus Equipment) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare
+  for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest
+  delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.4.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: Do you accept Medicare assignment for all thirteen rental months?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: We accept assignment, yes, all thirteen.
+  - turn_id: t3
+    speaker: us
+    text: Would she need to sign an ABN, or pay anything up front?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: >-
+      No ABN, a K0001's covered as long as the paperwork's right. She'd owe her twenty percent and
+      whatever's left on her Part B deductible -- the driver collects the first month's share when he
+      drops off the chair, and then we bill her monthly after that. Pretty standard.
+labels:
+  accepts_assignment_all_months: {status: found, value: "yes"}
+  abn_required: {status: found, value: "no"}
+  collects_coinsurance_at_delivery: {status: found, value: "yes"}
+  full_price_or_no_assignment: {status: not_stated}
+tags: [coinsurance_vs_full_price, coinsurance_at_delivery, conditions]
+notes: >-
+  Pair with sup_05. An assigning supplier collecting the 20% / deductible at delivery is the normal
+  condition, not full price. full_price_or_no_assignment: not_stated and "no" are both accepted
+  (negative equivalence for supplier conditions).

@@ -1,0 +1,41 @@
+item_id: note_02_no_weight
+reader: read_visit_note
+goal: >-
+  Read Dr. Sarah Chen's visit note for Eleanor Martinez for the Medicare manual wheelchair coverage
+  criteria A through G and her weight in pounds.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.age: "72"
+  order.hcpcs_expected: K0001
+  note.version: "1"
+text: |
+  Office Visit -- Sarah Chen MD -- Sunrise Family Medicine
+  Patient: MARTINEZ, ELEANOR   DOB: 3/14/1954   Date: 11/13/2026
+
+  S: Here w/ son Tony. Knees "worse than ever". Tried a rollator walker since spring -- still can't
+  safely get from bed to toilet or to the kitchen; son says she sits down on the walker seat every few
+  steps. Needs help to bathe. Pt says she'd use a wheelchair at home "every day if it means I can get
+  to the bathroom by myself".
+
+  O: BP 128/76  P 70  T 98.1  Ht 5'3"  SpO2 97%. Scale out of service today -- wt not obtained.
+  Bilat knee effusions, crepitus. Shoulders: painful arc bilaterally, unable to propel more than a
+  few feet in clinic chair.
+
+  A: Mobility limitation significantly impairing MRADLs (toileting, bathing, getting to meals) in the
+  home. Cannot be safely resolved with cane or walker (rollator trial failed, see above). Manual
+  wheelchair will significantly improve MRADL participation; will use regularly at home. Son lives
+  with pt and is available, willing and able to push the wheelchair for her.
+
+  P: Std manual w/c, verbal order given. Home layout to be confirmed by supplier. RTC 3 months.
+labels:
+  weight_lb: {status: not_stated}
+  criterion_a: {status: found, value: documented}
+  criterion_b: {status: found, value: documented}
+  criterion_d: {status: found, value: documented}
+  criterion_e: {status: found, value: documented}
+  criterion_g: {status: found, value: documented}
+tags: [no_weight]
+notes: >-
+  No weight anywhere (the scale was out of service); height alone is not a weight. Criterion F is
+  deliberately unlabelled (the note documents she cannot self-propel; G covers the F-or-G rule).
+  Criterion C unlabelled (deferred to the supplier).

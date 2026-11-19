@@ -1,0 +1,47 @@
+item_id: hv2_read_pcp_reply_02_sent_to_supplier_code_unconfirmed
+reader: read_pcp_reply
+goal: >-
+  Follow-up call to Sunrise Family Medicine: the written order we received for Eleanor Martinez
+  lists K0003; ask whether Dr. Chen meant K0001 (standard manual wheelchair) and where the order
+  has been sent.
+context_facts:
+  pcp.name: Dr. Sarah Chen
+  pcp.practice: Sunrise Family Medicine, Chicago IL
+  pcp.request_status: docs_received
+  order.hcpcs_expected: K0001
+  order.hcpcs_on_order: K0003
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, this is Mira Mace following up on Eleanor Martinez's wheelchair order. The copy we
+      received lists K0003. Did Dr. Chen mean K0001, a standard manual wheelchair? And has the order
+      gone anywhere yet?
+  - turn_id: t2
+    speaker: pcp_office
+    text: >-
+      Hi, it's Janelle. Let me look... okay. So the doctor's out today, I can't ask her about the
+      code. But the order did already go out, we faxed it straight over to Windy City Mobility on
+      Monday, they're who we normally use. You'd have to check with them.
+  - turn_id: t3
+    speaker: us
+    text: Thanks. Could someone confirm the code with Dr. Chen when she's back?
+  - turn_id: t4
+    speaker: pcp_office
+    text: I'll leave her a note.
+labels:
+  outcome: {status: found, value: already_sent_to_supplier}
+  supplier_named: {status: found, value: Windy City Mobility}
+  contact_name: {status: found, value: Janelle}
+  item_confirmed: {status: not_stated}
+  send_by: {status: not_stated}
+tags: [wrong_item_code, already_sent, never_answered]
+notes: |-
+  EVIDENCE outcome t2 "we faxed it straight over to Windy City Mobility on Monday"
+  EVIDENCE supplier_named t2 "we faxed it straight over to Windy City Mobility on Monday"
+  EVIDENCE contact_name t2 "it's Janelle"
+  We ask whether K0001 was meant; the office cannot ask the doctor, so the item is NOT confirmed.
+  "K0001" appears only in our own turn; reading item_confirmed as K0001 would take our question as
+  the office's answer. "on Monday" is when the order was already sent, not a send-by date for us,
+  so send_by is not_stated. The office said "Windy City Mobility" (the directory's full name adds
+  "& DME"); the label is what the office said.

@@ -1,0 +1,27 @@
+item_id: h_saf_02_admitted_and_medicaid
+reader: check_safety_and_conditions
+goal: >-
+  Check this reply for safety signals (opts out, wants a person, deceased, hospitalised, in hospice,
+  on Medicare Advantage, receives Medicaid or a Savings Program) and supplier conditions.
+context_facts:
+  patient.name: Eleanor Martinez
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi Eleanor, it's Mira Mace with an update: Dr. Chen's office has sent your wheelchair order.
+  - turn_id: t2
+    speaker: helper
+    text: >-
+      This is Tony, her son. She got admitted last night with chest pain, she's up on the cardiac floor
+      at the hospital. Also, about the state help you asked her about before -- yes, she has Illinois
+      Medicaid, I found the card in her purse.
+labels:
+  hospitalised: {status: found, value: "yes"}
+  medicaid_or_msp: {status: found, value: "yes"}
+  deceased: {status: not_stated}
+  opts_out: {status: not_stated}
+tags: [hospital, medicaid, safety, caregiver, unsolicited]
+notes: >-
+  Two signals from the helper. The Medicaid answer is volunteered later, not an answer to the
+  question just asked, so it counts as a signal.

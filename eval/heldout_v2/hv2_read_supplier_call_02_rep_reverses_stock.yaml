@@ -1,0 +1,100 @@
+item_id: hv2_read_supplier_call_02_rep_reverses_stock
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 9 (Belmont Medical Equipment) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60630: new Medicare patients, bills
+  Medicare for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months,
+  ABN, earliest delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60630"
+  patient.coverage: original_medicare_part_b
+  supplier.9.name: Belmont Medical Equipment
+  supplier.9.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hello, I'm calling from Mira Mace for a Medicare patient who needs a standard manual
+      wheelchair, K0001. Is now an okay time for a few questions?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: Belmont Medical, can you hold?
+  - turn_id: t3
+    speaker: us
+    text: Sure.
+  - turn_id: t4
+    speaker: supplier_rep
+    text: "[about forty seconds of hold music] Okay, sorry, it's a zoo today. Go ahead, what was it?"
+  - turn_id: t5
+    speaker: us
+    text: Are you taking new Medicare patients, and can you bill Medicare for a K0001?
+  - turn_id: t6
+    speaker: supplier_rep
+    text: Yes and yes.
+  - turn_id: t7
+    speaker: us
+    text: Do you have one in stock?
+  - turn_id: t8
+    speaker: supplier_rep
+    text: Yep, system shows two on hand.
+  - turn_id: t9
+    speaker: us
+    text: And do you deliver to 60630?
+  - turn_id: t10
+    speaker: supplier_rep
+    text: Yep, yep, we're up that way all the time.
+  - turn_id: t11
+    speaker: us
+    text: Do you accept assignment for all thirteen months of the rental?
+  - turn_id: t12
+    speaker: supplier_rep
+    text: >-
+      We take assignment, sure. All thirteen... um, I think? Sometimes billing switches people
+      partway, I'd honestly have to ask them.
+  - turn_id: t13
+    speaker: us
+    text: Okay. What's the earliest you could deliver?
+  - turn_id: t14
+    speaker: supplier_rep
+    text: >-
+      Let me pull up the... oh. Hang on. Scratch what I said before, those two chairs are both
+      tagged for other patients already. So no, I don't actually have one for her right now. We've
+      got a restock on the truck. Soonest I can get one to her is Wednesday, that I can promise you.
+  - turn_id: t15
+    speaker: us
+    text: Understood. Before I let you go, can I read back what I have?
+  - turn_id: t16
+    speaker: supplier_rep
+    text: >-
+      Ah, I've got three lines blinking, I'm sorry, you'll have to call me back for the rest. Bye
+      now.
+labels:
+  accepting_new_medicare: {status: found, value: "yes"}
+  bills_medicare_k0001: {status: found, value: "yes"}
+  k0001_in_stock: {status: found, value: "no"}
+  delivers_to_zip: {status: found, value: "yes"}
+  accepts_assignment_all_months: {status: ambiguous}
+  earliest_delivery: {status: found, value: Wednesday, commitment: firm}
+  abn_required: {status: not_stated}
+  rep_name: {status: not_stated}
+  readback_confirmed: {status: not_stated}
+  call_back_after: {status: not_stated}
+tags: [rep_changes_answer, negated_stock, firm_date, never_answered, interrupted, messy]
+notes: |-
+  EVIDENCE accepting_new_medicare t6 "Yes and yes"
+  EVIDENCE bills_medicare_k0001 t6 "Yes and yes"
+  EVIDENCE k0001_in_stock t14 "So no, I don't actually have one for her right now"
+  EVIDENCE delivers_to_zip t10 "we're up that way all the time"
+  EVIDENCE accepts_assignment_all_months t12 "All thirteen... um, I think?"
+  EVIDENCE earliest_delivery t14 "Soonest I can get one to her is Wednesday, that I can promise you"
+  Stock: the rep says yes in t8, then explicitly retracts it in t14 ("Scratch what I said before")
+  and gives the reason. An explicit self-correction settles the answer, so the label is the final
+  "no", not contradictory. Assignment: "We take assignment" but "All thirteen... um, I think?" plus
+  "I'd honestly have to ask them" is not a clean answer for all 13 months, so it is a doubt label
+  (ambiguous or contradictory both match). Delivery: "that I can promise you" makes Wednesday firm.
+  Never answered: we never asked about an ABN (abn_required not_stated; reading "no" would be
+  invented), the rep never gave a name, the rep hung up before our read-back (t15 is our request,
+  not a read-back turn, and "Yep" in t8/t10 answers other questions), and "call me back" carries no
+  time, so call_back_after is not_stated. call_outcome is deliberately unlabelled (answered vs
+  call_back_later is not settled by the text).

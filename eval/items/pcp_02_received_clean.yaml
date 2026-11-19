@@ -1,0 +1,29 @@
+item_id: pcp_02_received_clean
+reader: read_pcp_reply
+goal: >-
+  Confirmation call to Dr. Sarah Chen's office (Sunrise Family Medicine): did they receive our request
+  for the signed standard written order and the visit note for Eleanor Martinez's K0001 standard
+  manual wheelchair, and who is our contact there.
+context_facts:
+  patient.name: Eleanor Martinez
+  pcp.name: Dr. Sarah Chen
+  pcp.practice: Sunrise Family Medicine, Chicago IL
+  pcp.request_status: sent
+  order.hcpcs_expected: K0001
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, Mira Mace calling to confirm you got our request for Eleanor Martinez's wheelchair order and
+      visit note.
+  - turn_id: t2
+    speaker: pcp_office
+    text: >-
+      Yep, got it, it's on Dr. Chen's desk for signature. This is Janelle, I'm her MA, just call me if
+      you need anything else.
+labels:
+  outcome: {status: found, value: received}
+  contact_name: {status: found, value: Janelle}
+  send_by: {status: not_stated}
+tags: [clean]
+notes: Received, no send-by date given.

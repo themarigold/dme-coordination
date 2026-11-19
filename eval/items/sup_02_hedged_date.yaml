@@ -1,0 +1,40 @@
+item_id: sup_02_hedged_date
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 2 (Windy City Mobility & DME) for a K0001 standard manual wheelchair
+  rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare for K0001,
+  K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest delivery,
+  then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.2.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Thanks for taking the call. Do you deliver to ZIP code 60625?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: 60625... that's Albany Park, yeah, we go up there.
+  - turn_id: t3
+    speaker: us
+    text: Do you accept assignment for all thirteen rental months?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: Yep, we're participating. We take assignment the whole rental.
+  - turn_id: t5
+    speaker: us
+    text: And what's the earliest you could deliver?
+  - turn_id: t6
+    speaker: supplier_rep
+    text: >-
+      Ehhh. I want to say maybe Wednesday next week? Don't hold me to it, it depends what the
+      driver's route looks like that week, I'd have to call you back and confirm.
+labels:
+  delivers_to_zip: {status: found, value: "yes"}
+  accepts_assignment_all_months: {status: found, value: "yes"}
+  earliest_delivery: {status: found, value: "Wednesday next week", commitment: tentative}
+tags: [hedge, hedged_date]
+notes: The date is offered but explicitly not committed ("maybe", "don't hold me to it") -> tentative.

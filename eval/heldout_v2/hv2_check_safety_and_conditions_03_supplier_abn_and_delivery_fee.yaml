@@ -1,0 +1,48 @@
+item_id: hv2_check_safety_and_conditions_03_supplier_abn_and_delivery_fee
+reader: check_safety_and_conditions
+goal: >-
+  Safety and conditions check on supplier 5 (ChicagoLand Durable Medical)'s answers on the
+  re-confirm call (handoff step 1) for the K0001 standard manual wheelchair rental: stock, ZIP
+  60630, assignment and delivery date.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60630"
+  supplier.5.name: ChicagoLand Durable Medical
+  supplier.5.status: primary
+  handoff.step: "1"
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, it's Mira Mace again, calling back about the K0001 standard wheelchair for our Medicare
+      patient in 60630. You'd said you could deliver this week. Is that still on, and is it still
+      assignment for all thirteen months?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      Yeah, should be fine, Thursday still works, and yes, still assignment. Couple things from our
+      billing lady though. She wants the patient to sign one of those ABN forms before we drop it
+      off, says it's our policy now on all chairs. And there's a forty-dollar delivery charge since
+      she's outside our free zone, payable to the driver. Other than that, same as before.
+  - turn_id: t3
+    speaker: us
+    text: Thanks, I'll make a note of both.
+labels:
+  abn_requested: {status: found, value: "yes"}
+  other_condition: {status: found, value: forty-dollar delivery charge}
+  full_price_or_no_assignment: {status: not_stated}
+  needs_info: {status: not_stated}
+  opts_out: {status: not_stated}
+  wants_person: {status: not_stated}
+  deceased: {status: not_stated}
+  hospitalised: {status: not_stated}
+tags: [unsolicited, abn, other_condition, buried_condition]
+notes: |-
+  EVIDENCE abn_requested t2 "She wants the patient to sign one of those ABN forms before we drop it off"
+  EVIDENCE other_condition t2 "there's a forty-dollar delivery charge since she's outside our free zone"
+  Two conditions buried after a reassuring "should be fine". The ABN request always goes to a human
+  (knowledge file, abn entry). The delivery fee is not one of the typed conditions (needs info,
+  coinsurance at/after delivery, full price / no assignment), so it is other_condition (graded on
+  presence only, never on wording). It is not full price or a refusal of assignment: the rep says
+  "still assignment". collects_coinsurance_at_delivery is deliberately unlabelled: a fee paid to the
+  driver is not the coinsurance, but a reader could arguably file it there.

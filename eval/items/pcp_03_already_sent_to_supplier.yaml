@@ -1,0 +1,28 @@
+item_id: pcp_03_already_sent_to_supplier
+reader: read_pcp_reply
+goal: >-
+  Confirmation call to Dr. Sarah Chen's office (Sunrise Family Medicine): did they receive our request
+  for the signed standard written order and the visit note for Eleanor Martinez's K0001 standard
+  manual wheelchair, and who is our contact there.
+context_facts:
+  patient.name: Eleanor Martinez
+  pcp.name: Dr. Sarah Chen
+  pcp.practice: Sunrise Family Medicine, Chicago IL
+  pcp.request_status: sent
+  order.hcpcs_expected: K0001
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, this is Mira Mace checking on our request for a signed wheelchair order and visit note for
+      Eleanor Martinez.
+  - turn_id: t2
+    speaker: pcp_office
+    text: >-
+      Oh, we already took care of that one. Her daughter called and asked us to send it straight to
+      Northside CarePlus, so Dr. Chen signed it and it went out to them last Tuesday. You'd have to
+      check with them.
+labels:
+  outcome: {status: found, value: already_sent_to_supplier}
+  supplier_named: {status: found, value: Northside CarePlus}
+tags: [pcp_already_sent]

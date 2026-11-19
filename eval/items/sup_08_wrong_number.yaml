@@ -1,0 +1,25 @@
+item_id: sup_08_wrong_number
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 8 (Midwest Mobility Solutions) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare
+  for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest
+  delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.8.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: Hi, is this Midwest Mobility Solutions?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      No, this is Touhy Family Dental. We get calls for them sometimes, I don't have a number for
+      them, sorry hon.
+labels:
+  call_outcome: {status: found, value: wrong_number}
+tags: [clean, call_outcome]
+notes: The listed number reaches a different business -> wrong_number.

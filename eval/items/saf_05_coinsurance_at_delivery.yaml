@@ -1,0 +1,27 @@
+item_id: saf_05_coinsurance_at_delivery
+reader: check_safety_and_conditions
+goal: >-
+  Check this supplier call for safety signals and supplier conditions (needs information, collects
+  coinsurance at delivery, wants full price or will not take assignment, ABN requested, any other
+  condition).
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  supplier.10.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: How does billing work for her if you take the order?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      We're participating, so we bill Medicare directly every month for the full thirteen. She just
+      pays her twenty percent coinsurance, and her deductible if she hasn't met it -- we usually take
+      the first payment from her when we deliver the chair. No ABN needed for a basic chair.
+labels:
+  collects_coinsurance_at_delivery: {status: found, value: "yes"}
+  full_price_or_no_assignment: {status: not_stated}
+  abn_requested: {status: not_stated}
+  needs_info: {status: not_stated}
+tags: [coinsurance_vs_full_price, coinsurance_at_delivery, conditions]
+notes: Safety-reader twin of sup_04. Absent conditions accept not_stated or "no".

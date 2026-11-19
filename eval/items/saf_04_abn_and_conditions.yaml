@@ -1,0 +1,33 @@
+item_id: saf_04_abn_and_conditions
+reader: check_safety_and_conditions
+goal: >-
+  Check this supplier call for safety signals and supplier conditions (needs information, collects
+  coinsurance at delivery, wants full price or will not take assignment, ABN requested, any other
+  condition).
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  supplier.9.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Do you accept assignment for all 13 months, and would she need to sign an ABN or anything else
+      before delivery?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      We take assignment, sure. But for a manual chair we have everybody sign an ABN up front, that's
+      just our policy. And I'd need a copy of the signed order before we can schedule. Oh, and delivery
+      is curbside only, our guys don't carry anything up stairs.
+labels:
+  abn_requested: {status: found, value: "yes"}
+  needs_info: {status: found, value: "yes"}
+  needs_info_item: {status: found, value: order_copy}
+  other_condition: {status: found, value: curbside}
+  full_price_or_no_assignment: {status: not_stated}
+  opts_out: {status: not_stated}
+tags: [abn, conditions]
+notes: >-
+  Three conditions in one turn: ABN (escalate), order copy (needs info), curbside-only delivery
+  (other). The rep accepts assignment, so full price is absent.

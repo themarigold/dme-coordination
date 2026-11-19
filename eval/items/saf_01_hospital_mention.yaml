@@ -1,0 +1,31 @@
+item_id: saf_01_hospital_mention
+reader: check_safety_and_conditions
+goal: >-
+  Check this reply for safety signals (opts out, wants a person, deceased, hospitalised, in hospice,
+  on Medicare Advantage, receives Medicaid or a Savings Program) and supplier conditions.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.helper_name: Maria
+  patient.helper_permission: "yes"
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi Eleanor, it's Mira Mace. Good news: a supplier has your wheelchair in stock. Reply YES if we
+      can tell you about next steps.
+  - turn_id: t2
+    speaker: helper
+    text: >-
+      Hi this is her daughter Maria. Mom's in the hospital at Lakeview General since Sunday, she fell
+      in the bathroom. They're saying a few more days at least. Please don't schedule anything yet,
+      I'll text you when she's home.
+labels:
+  hospitalised: {status: found, value: "yes"}
+  opts_out: {status: ambiguous}
+  deceased: {status: not_stated}
+  wants_person: {status: not_stated}
+tags: [hospital, safety, caregiver, unsolicited]
+notes: >-
+  Currently hospitalised, reported by the helper. "Don't schedule anything yet" is a pause. Safety signals escalate on doubt,
+  so a pause reads as an unclear opt-out: opts_out = ambiguous, so a person decides (contradictory is
+  also accepted). Absent signals accept not_stated or "no" (negative equivalence).

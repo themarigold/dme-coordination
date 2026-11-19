@@ -1,0 +1,55 @@
+item_id: sup_03_volunteered_early
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 3 (Prairie State Medical Supply) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare
+  for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest
+  delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.3.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, I'm calling from Mira Mace about a standard manual wheelchair, K0001, for a Medicare patient
+      up in 60625 --
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      Oh, 60625, sure, we deliver up there constantly, we're right on Western. What do you need?
+  - turn_id: t3
+    speaker: us
+    text: Great. First, are you taking new Medicare patients?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: We are.
+  - turn_id: t5
+    speaker: us
+    text: Do you have a K0001 in stock?
+  - turn_id: t6
+    speaker: supplier_rep
+    text: Got four of 'em sitting right here.
+  - turn_id: t7
+    speaker: us
+    text: And do you deliver to her ZIP code?
+  - turn_id: t8
+    speaker: supplier_rep
+    text: Like I said.
+  - turn_id: t9
+    speaker: us
+    text: What's the earliest delivery date?
+  - turn_id: t10
+    speaker: supplier_rep
+    text: Thursday. I'll put her on Thursday's truck, that's a definite.
+labels:
+  accepting_new_medicare: {status: found, value: "yes"}
+  k0001_in_stock: {status: found, value: "yes"}
+  delivers_to_zip: {status: found, value: "yes"}
+  earliest_delivery: {status: found, value: Thursday, commitment: firm}
+tags: [volunteered_early]
+notes: >-
+  The ZIP answer is given in t2, before the question in t7; t8 only points back to it. Evidence from
+  t2 is the expected (and valid) quote.

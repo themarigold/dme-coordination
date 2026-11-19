@@ -1,0 +1,27 @@
+item_id: pat_04_clean_consent
+reader: read_patient_reply
+goal: >-
+  First-contact script, consent questions: may we proceed, may we share her details with candidate
+  suppliers, and may we call and text her about this order.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.identity_verified: "yes"
+  patient.consent_proceed: ""
+  patient.consent_share_with_suppliers: ""
+  patient.consent_calls_texts: ""
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Thanks, Eleanor. Before we start we need your OK on three things: (1) may we go ahead and arrange
+      your wheelchair? (2) may we share your name, address and the order with the medical supply
+      companies we contact? (3) is it OK for us to call and text you at this number about this order?
+  - turn_id: t2
+    speaker: patient
+    text: Yes to all three. Go ahead dear.
+labels:
+  consent_proceed: {status: found, value: "yes"}
+  consent_share_with_suppliers: {status: found, value: "yes"}
+  consent_calls_texts: {status: found, value: "yes"}
+intents: [confirm]
+tags: [clean, score_intents]

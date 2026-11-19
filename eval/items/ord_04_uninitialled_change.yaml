@@ -1,0 +1,38 @@
+item_id: ord_04_uninitialled_change
+reader: read_order_document
+goal: >-
+  Read the written order received from Dr. Sarah Chen's office for Eleanor Martinez: the six order
+  elements, the item and HCPCS code exactly as written, the signature, and any changes.
+context_facts:
+  patient.name: Eleanor Martinez
+  order.item_requested: standard manual wheelchair
+  order.hcpcs_expected: K0001
+  pcp.name: Dr. Sarah Chen
+  order.version: "2"
+text: |
+  11/20/2026 14:31 FROM:SUNRISE FAMILY MED   TO: MIRA MACE        P.01
+
+  STANDARD WRITTEN ORDER - DME
+  Pt: Eleanor Martinez    DOB 3/14/1954    Medicare ID 1EG4-TE5-MK00
+  Order date 11/19/2026
+
+  Item: Lightweight wheelchair K0003 (scribbled out)    standard w/c K0001 (handwritten above it)
+  Qty 1
+
+  Ordering practitioner: Sarah Chen MD   NPI 9999999999
+  Signature: [handwritten signature] S. Chen   11/19/2026
+
+  [sticky note on page, different handwriting: "fixed per your call -- Rosa"]
+labels:
+  has_changes: {status: found, value: "yes"}
+  changes_initialled_dated: {status: found, value: "no"}
+  signature_present: {status: found, value: "yes"}
+  hcpcs_code: {status: contradictory}
+tags: [uninitialled_change, correction]
+notes: >-
+  Pair with ord_02. The item was changed by hand with no practitioner initials or date anywhere near
+  the change; the front desk's sticky note ("Rosa") is not a practitioner initial. The text does not
+  state that initials are absent; the reader has to notice it. hcpcs_code = contradictory (ambiguous
+  also accepted): the page carries the scribbled-out K0003 and the handwritten K0001, and the reader
+  reports what is on the page. Whether the change is valid is not the code field's job: the rules act
+  on has_changes and changes_initialled_dated.

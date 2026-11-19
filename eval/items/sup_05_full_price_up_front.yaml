@@ -1,0 +1,35 @@
+item_id: sup_05_full_price_up_front
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 6 (Roosevelt Medical Supply Co) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare
+  for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest
+  delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.6.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: Do you accept Medicare assignment for all thirteen rental months on a K0001?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      So. We're not participating with Medicare on the manual chairs anymore. What we do is she pays
+      the full rental up front, by card, and we give her the paperwork to send in to Medicare herself.
+  - turn_id: t3
+    speaker: us
+    text: So you wouldn't accept assignment for any of the rental months?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: No, not on those. Full amount at the time we deliver.
+labels:
+  accepts_assignment_all_months: {status: found, value: "no"}
+  full_price_or_no_assignment: {status: found, value: "yes"}
+  collects_coinsurance_at_delivery: {status: not_stated}
+tags: [coinsurance_vs_full_price, full_price, conditions]
+notes: >-
+  Pair with sup_04. "Full amount at the time we deliver" is full price (no assignment), not the
+  coinsurance collected at delivery; reading collects_coinsurance_at_delivery = yes is the trap.

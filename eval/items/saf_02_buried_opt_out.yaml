@@ -1,0 +1,29 @@
+item_id: saf_02_buried_opt_out
+reader: check_safety_and_conditions
+goal: >-
+  Check this reply for safety signals (opts out, wants a person, deceased, hospitalised, in hospice,
+  on Medicare Advantage, receives Medicaid or a Savings Program) and supplier conditions.
+context_facts:
+  patient.name: Eleanor Martinez
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi Eleanor, it's Mira Mace. Medicare rents the wheelchair for 13 months and then it's yours. Your
+      share is usually 20% of the monthly rental after your Part B deductible. Any questions?
+  - turn_id: t2
+    speaker: patient
+    text: >-
+      Well thank you for explaining all that, I had no idea about the 13 months business. My neighbor
+      Ruthie got her chair from the VA so she never paid a dime but I'm not a veteran so I suppose that
+      doesn't help me. My knee was bad again today, I had to sit on the stairs. Anyway the other thing
+      is I've had about enough of the phone ringing, it's been three calls this week, so please don't
+      call or text me about this anymore, I'll deal with Dr. Chen myself. Have a blessed day.
+labels:
+  opts_out: {status: found, value: "yes"}
+  wants_person: {status: not_stated}
+  hospitalised: {status: not_stated}
+tags: [opt_out, buried_opt_out, safety, unsolicited]
+notes: >-
+  The opt-out sits near the end of a long friendly reply. "I'll deal with Dr. Chen myself" is not a
+  request for a person.

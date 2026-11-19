@@ -1,0 +1,58 @@
+item_id: hv2_read_order_document_02_code_corrected_initialled_dated
+reader: read_order_document
+goal: >-
+  Read the corrected written order for Eleanor Martinez from Sunrise Family Medicine (Dr. Sarah
+  Chen), sent after we asked whether K0003 should have been K0001: the six order elements, the
+  HCPCS code, and any changes and whether they are initialled and dated.
+context_facts:
+  patient.name: Eleanor Martinez
+  order.hcpcs_expected: K0001
+  order.item_requested: standard manual wheelchair
+  order.version: "2"
+  pcp.name: Dr. Sarah Chen
+text: |
+  Sunrise Family Medicine -- DME Order (fax)                          Page 1 of 1
+
+  Patient name:  Eleanor Martinez
+  Medicare ID:   5TW2QD4XM61
+  Date of order: 11/19/2026
+
+  Equipment:  Lightweight wheelchair [struck through]  Standard wheelchair   [handwritten: SC 11/20/26]
+  HCPCS:      K0003 [struck through]  K0001   [handwritten: SC 11/20/26]
+  Qty:        1
+  Diagnosis:  M17.0 bilateral primary osteoarthritis of knee; M48.061 spinal stenosis, lumbar
+
+  Prescriber: Sarah Chen MD, NPI 1487326591
+  Prescriber signature:  [handwritten signature] S. Chen
+labels:
+  beneficiary_name: {status: found, value: Eleanor Martinez}
+  medicare_id: {status: found, value: 5TW2QD4XM61}
+  item_description: {status: found, value: Standard wheelchair}
+  hcpcs_code: {status: found, value: K0001}
+  quantity: {status: found, value: "1"}
+  order_date: {status: found, value: 11/19/2026}
+  practitioner_name: {status: found, value: Sarah Chen}
+  practitioner_npi: {status: found, value: "1487326591"}
+  signature_present: {status: found, value: "yes"}
+  has_changes: {status: found, value: "yes"}
+  changes_initialled_dated: {status: found, value: "yes"}
+tags: [correction, wrong_item_code, initialled_and_dated]
+notes: |-
+  EVIDENCE beneficiary_name doc "Patient name:  Eleanor Martinez"
+  EVIDENCE medicare_id doc "Medicare ID:   5TW2QD4XM61"
+  EVIDENCE item_description doc "Standard wheelchair"
+  EVIDENCE hcpcs_code doc "K0003 [struck through]  K0001"
+  EVIDENCE quantity doc "Qty:        1"
+  EVIDENCE order_date doc "Date of order: 11/19/2026"
+  EVIDENCE practitioner_name doc "Prescriber: Sarah Chen MD"
+  EVIDENCE practitioner_npi doc "NPI 1487326591"
+  EVIDENCE signature_present doc "Prescriber signature:  [handwritten signature] S. Chen"
+  EVIDENCE has_changes doc "K0003 [struck through]  K0001"
+  EVIDENCE changes_initialled_dated doc "[handwritten: SC 11/20/26]"
+  Both changes (description and code) carry the practitioner's initials and a date, which
+  satisfies the knowledge file's order_corrections rule. hcpcs_code and item_description are the
+  corrected values as the order now reads (K0001, "Standard wheelchair", which is a K0001 synonym in
+  the code table), not the struck K0003 / "Lightweight wheelchair". The correction date (11/20/26)
+  differs from the order date (11/19/2026); order_date is the date of order, not the correction
+  date. The diagnosis codes are distractors with digits, not quantity or ID values. The evidence
+  check normalises runs of spaces, so quotes keep the document's spacing either way.

@@ -1,0 +1,109 @@
+item_id: hv2_read_supplier_call_05_coinsurance_needs_demographics
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 5 (ChicagoLand Durable Medical) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60630: new Medicare patients, bills
+  Medicare for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months,
+  ABN, earliest delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60630"
+  patient.coverage: original_medicare_part_b
+  supplier.5.name: ChicagoLand Durable Medical
+  supplier.5.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi there, I'm calling from Mira Mace, a care coordination service. We have a Medicare Part B
+      patient who needs a standard manual wheelchair, HCPCS K0001. Do you have a moment?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: Yeah, uh, this is Dev. Go ahead.
+  - turn_id: t3
+    speaker: us
+    text: Are you taking new Medicare patients, and do you bill Medicare for the K0001?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: Yes, we're taking new ones. Um, K0001, yeah, we bill that, it's a rental.
+  - turn_id: t5
+    speaker: us
+    text: Is one in stock right now?
+  - turn_id: t6
+    speaker: supplier_rep
+    text: Let me... yep. Got four.
+  - turn_id: t7
+    speaker: us
+    text: Do you deliver to ZIP 60630?
+  - turn_id: t8
+    speaker: supplier_rep
+    text: We do.
+  - turn_id: t9
+    speaker: us
+    text: Do you accept assignment for all thirteen months?
+  - turn_id: t10
+    speaker: supplier_rep
+    text: >-
+      Yes, we're participating, assignment all thirteen. Just so she knows, though, she's
+      responsible for her twenty percent and any deductible, and the driver collects the first
+      month's share when he drops the chair off.
+  - turn_id: t11
+    speaker: us
+    text: Got it. Would she need to sign an ABN?
+  - turn_id: t12
+    speaker: supplier_rep
+    text: No.
+  - turn_id: t13
+    speaker: us
+    text: And the earliest you could deliver?
+  - turn_id: t14
+    speaker: supplier_rep
+    text: >-
+      Uh, I could do Tuesday the 24th, that's a firm slot. Oh, and before we can schedule anything,
+      I'll need her date of birth and her home address to set up the account.
+  - turn_id: readback
+    speaker: us
+    text: >-
+      Let me read it back: new Medicare patients yes, you bill Medicare for K0001, in stock, you
+      deliver to 60630, assignment for all thirteen months, she pays her twenty percent and
+      deductible with the first month's share collected at delivery, no ABN, earliest delivery
+      Tuesday the 24th, and you need her date of birth and address before scheduling. I spoke with
+      Dev. Is that all correct?
+  - turn_id: t15
+    speaker: supplier_rep
+    text: Yep, that's everything.
+labels:
+  call_outcome: {status: found, value: answered}
+  accepting_new_medicare: {status: found, value: "yes"}
+  bills_medicare_k0001: {status: found, value: "yes"}
+  k0001_in_stock: {status: found, value: "yes"}
+  delivers_to_zip: {status: found, value: "yes"}
+  accepts_assignment_all_months: {status: found, value: "yes"}
+  collects_coinsurance_at_delivery: {status: found, value: "yes"}
+  full_price_or_no_assignment: {status: not_stated}
+  abn_required: {status: found, value: "no"}
+  earliest_delivery: {status: found, value: Tuesday the 24th, commitment: firm}
+  needs_info: {status: found, value: "yes"}
+  needs_info_item: {status: found, value: demographics}
+  rep_name: {status: found, value: Dev}
+  readback_confirmed: {status: found, value: "yes"}
+tags: [coinsurance_vs_full_price, needs_info, firm_date, readback, fillers]
+notes: |-
+  EVIDENCE call_outcome t2 "this is Dev"
+  EVIDENCE accepting_new_medicare t4 "Yes, we're taking new ones"
+  EVIDENCE bills_medicare_k0001 t4 "K0001, yeah, we bill that"
+  EVIDENCE k0001_in_stock t6 "yep. Got four"
+  EVIDENCE delivers_to_zip t8 "We do"
+  EVIDENCE accepts_assignment_all_months t10 "assignment all thirteen"
+  EVIDENCE collects_coinsurance_at_delivery t10 "the driver collects the first month's share when he drops the chair off"
+  EVIDENCE abn_required t12 "No"
+  EVIDENCE earliest_delivery t14 "I could do Tuesday the 24th, that's a firm slot"
+  EVIDENCE needs_info t14 "I'll need her date of birth and her home address to set up the account"
+  EVIDENCE needs_info_item t14 "I'll need her date of birth and her home address to set up the account"
+  EVIDENCE rep_name t2 "this is Dev"
+  EVIDENCE readback_confirmed t15 "Yep, that's everything"
+  The counterpart of item 03: an assigning supplier that collects the patient's share at delivery
+  (normal per the knowledge file's assignment entry), so collects_coinsurance_at_delivery is yes
+  and full_price_or_no_assignment is absent. The info request comes after the date answer, as an
+  afterthought; date of birth and address are demographics, not the Medicare ID or the order copy.
+  "I could do" is softened by "that's a firm slot", so the date is firm (2026-11-24 is a Tuesday).

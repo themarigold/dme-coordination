@@ -1,0 +1,61 @@
+item_id: hv2_read_order_document_01_initials_without_date
+reader: read_order_document
+goal: >-
+  Read our copy of the standard written order for Eleanor Martinez from Sunrise Family Medicine
+  (Dr. Sarah Chen): the six order elements, the HCPCS code, and any changes and whether they are
+  initialled and dated.
+context_facts:
+  patient.name: Eleanor Martinez
+  order.hcpcs_expected: K0001
+  order.item_requested: standard manual wheelchair
+  pcp.name: Dr. Sarah Chen
+  order.version: "1"
+text: |
+  SUNRISE FAMILY MEDICINE
+  2250 W Irving Park Rd, Chicago, IL 60618    Tel (312) 555-0198    Fax (312) 555-0199
+
+  STANDARD WRITTEN ORDER - DURABLE MEDICAL EQUIPMENT
+
+  Patient: Eleanor Martinez                DOB: 03/14/1954
+  Medicare (MBI): 5TW2-QD4-XM61
+
+  Item: Standard manual wheelchair with swing-away footrests
+  HCPCS: K0001
+  Seat width: 18 in. [struck through] 16 in.   [handwritten: SC]
+  Quantity: 1
+  Length of need: 99 months (lifetime)
+
+  Order date: 11/18/2026
+
+  Ordering practitioner: Sarah Chen, MD    NPI: 1487326591
+  Practitioner signature: [handwritten signature] Sarah Chen MD
+labels:
+  beneficiary_name: {status: found, value: Eleanor Martinez}
+  medicare_id: {status: found, value: 5TW2-QD4-XM61}
+  item_description: {status: found, value: Standard manual wheelchair}
+  hcpcs_code: {status: found, value: K0001}
+  quantity: {status: found, value: "1"}
+  order_date: {status: found, value: 11/18/2026}
+  practitioner_name: {status: found, value: Sarah Chen}
+  practitioner_npi: {status: found, value: "1487326591"}
+  signature_present: {status: found, value: "yes"}
+  has_changes: {status: found, value: "yes"}
+  changes_initialled_dated: {status: found, value: "no"}
+tags: [correction, initials_without_date]
+notes: |-
+  EVIDENCE beneficiary_name doc "Patient: Eleanor Martinez"
+  EVIDENCE medicare_id doc "5TW2-QD4-XM61"
+  EVIDENCE item_description doc "Standard manual wheelchair with swing-away footrests"
+  EVIDENCE hcpcs_code doc "HCPCS: K0001"
+  EVIDENCE quantity doc "Quantity: 1"
+  EVIDENCE order_date doc "Order date: 11/18/2026"
+  EVIDENCE practitioner_name doc "Ordering practitioner: Sarah Chen, MD"
+  EVIDENCE practitioner_npi doc "NPI: 1487326591"
+  EVIDENCE signature_present doc "Practitioner signature: [handwritten signature] Sarah Chen MD"
+  EVIDENCE has_changes doc "Seat width: 18 in. [struck through] 16 in."
+  EVIDENCE changes_initialled_dated doc "[handwritten: SC]"
+  The only change (seat width) carries initials but no date. The knowledge file's
+  order_corrections rule requires a change to be initialled/signed AND dated, so
+  changes_initialled_dated is "no" although initials are present. The change is on a detail that
+  is not one of the six elements, so every element label stays clean. The DOB on the order is not
+  a labelled field.

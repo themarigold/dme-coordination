@@ -1,0 +1,36 @@
+item_id: pat_01_caregiver_answers
+reader: read_patient_reply
+goal: >-
+  First-contact text exchange with Eleanor Martinez: confirm her identity (full name and date of
+  birth) and whether someone who helps her may also talk with us (name and her permission).
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.age: "72"
+  patient.identity_verified: ""
+  patient.helper_name: ""
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, this is Mira Mace texting for Eleanor Martinez about the wheelchair Dr. Chen ordered. To
+      confirm it's you, please reply with your full name and date of birth.
+  - turn_id: t2
+    speaker: patient
+    text: >-
+      this is eleanor. my daughter maria is going to text for me my eyes are bad. shes allowed to talk
+      to you about all of it
+  - turn_id: t3
+    speaker: helper
+    text: >-
+      Hi! Maria here (her daughter). Mom's full name is Eleanor Ruth Martinez, DOB March 14th, 1954.
+      Easiest to text me at this number, I'm with her most afternoons.
+labels:
+  helper_name: {status: found, value: Maria}
+  helper_permission: {status: found, value: "yes"}
+  identity_name: {status: found, value: Eleanor Ruth Martinez}
+  identity_dob: {status: found, value: "March 14th, 1954"}
+tags: [caregiver]
+notes: >-
+  The permission comes from Eleanor herself (t2); the identity facts come from the helper (t3).
+  identity_name label is the full form; "Eleanor Martinez" alone does not match by containment, but
+  "Eleanor" (t2) does -- accepted on purpose, the rule compares against the case record anyway.

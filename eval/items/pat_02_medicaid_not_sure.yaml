@@ -1,0 +1,28 @@
+item_id: pat_02_medicaid_not_sure
+reader: read_patient_reply
+goal: >-
+  First-contact script, Medicaid question: does Eleanor get help paying Medicare costs from Illinois
+  Medicaid or a Medicare Savings Program (yes, no, or not sure).
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.coverage: original_medicare_part_b
+  patient.medigap: "no"
+  patient.medicaid_or_msp: ""
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      One more question, Eleanor: do you get help paying your Medicare costs from Illinois Medicaid or
+      a Medicare Savings Program?
+  - turn_id: t2
+    speaker: patient
+    text: >-
+      Hmm. I really don't know, honey. I get a letter from the state every year, something about my
+      Part B premium? My son Tony handles all that. So I'm not sure, you'd have to ask him.
+labels:
+  medicaid_or_msp: {status: found, value: not_sure}
+tags: [medicaid]
+notes: >-
+  She says outright that she is not sure. The state letter about her premium might suggest a Savings
+  Program, but inferring "yes" is not reading; "not_sure" also holds the case for a human, as it
+  should.

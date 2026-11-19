@@ -1,0 +1,44 @@
+item_id: h_sup_01_backordered_tentative
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 11 (South Loop Medical Supply) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare
+  for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest
+  delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.11.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: Are you accepting new Medicare patients?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: Never had a problem with that, we take new Medicare folks every day.
+  - turn_id: t3
+    speaker: us
+    text: Do you have a standard manual wheelchair, K0001, available now?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: >-
+      K0001... hang on, the system's slow... ok. Those are backordered, I've got zero on hand. Could be
+      the 8th of December, could be later than that, the distributor won't commit to anything.
+  - turn_id: t5
+    speaker: us
+    text: So the earliest you could deliver would be around then?
+  - turn_id: t6
+    speaker: supplier_rep
+    text: >-
+      If it comes in on time, the earliest I could get it out to her is the 9th of December. And
+      honestly I wouldn't promise even that.
+labels:
+  accepting_new_medicare: {status: found, value: "yes"}
+  k0001_in_stock: {status: found, value: "no"}
+  earliest_delivery: {status: found, value: 9th of December, commitment: tentative}
+tags: [negation, negated_stock, hedge, hedged_date]
+notes: >-
+  "Never had a problem with that" is a yes. Stock is zero (backordered). The 8th of December in t4
+  is a stock arrival date, not a delivery offer (same rule as sup_01's note); the delivery offer is
+  the 9th of December in t6, explicitly uncommitted -> tentative.

@@ -1,0 +1,29 @@
+item_id: h_pat_01_neighbor_relays_opt_out
+reader: read_patient_reply
+goal: >-
+  First-contact script, helper question: is there someone who helps Eleanor that we may also talk to
+  (their name, and her permission).
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.helper_name: ""
+  patient.helper_permission: ""
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi Eleanor, it's Mira Mace. Is there someone who helps you that we may also talk to about your
+      wheelchair?
+  - turn_id: t2
+    speaker: helper
+    text: >-
+      Hello, this is Gloria Reyes, I'm her neighbor from downstairs, I help with her groceries and her
+      phone. She's sitting right here with me. Honestly she's overwhelmed with all of this and she says
+      she doesn't want any more calls or texts about the chair, she'll talk to her doctor herself.
+labels:
+  helper_name: {status: found, value: Gloria Reyes}
+intents: [gives_fact, opt_out]
+tags: [caregiver, opt_out, buried_opt_out, score_intents, unsolicited]
+notes: >-
+  The helper answers the question asked (gives_fact: her name) and relays Eleanor's opt-out (helper
+  turns count, as for the keyword backstop). helper_permission deliberately unlabelled: only the
+  neighbor speaks, so Eleanor's own permission is not on record.

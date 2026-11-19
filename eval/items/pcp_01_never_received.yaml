@@ -1,0 +1,35 @@
+item_id: pcp_01_never_received
+reader: read_pcp_reply
+goal: >-
+  Confirmation call to Dr. Sarah Chen's office (Sunrise Family Medicine): did they receive our request
+  for the signed standard written order and the visit note for Eleanor Martinez's K0001 standard
+  manual wheelchair, and who is our contact there.
+context_facts:
+  patient.name: Eleanor Martinez
+  pcp.name: Dr. Sarah Chen
+  pcp.practice: Sunrise Family Medicine, Chicago IL
+  pcp.request_status: sent
+  order.hcpcs_expected: K0001
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, this is Mira Mace following up on a fax we sent Monday for Eleanor Martinez, date of birth
+      March 14, 1954. It's a request for Dr. Chen to sign a written order for a standard manual
+      wheelchair and to send the visit note. Can you confirm you received it?
+  - turn_id: t2
+    speaker: pcp_office
+    text: >-
+      Hold on... Martinez, Eleanor... no, I'm not seeing anything. What number did you send it to? We
+      switched fax lines in October, the old one goes nowhere honestly. Nothing in Dr. Chen's queue
+      either.
+  - turn_id: t3
+    speaker: us
+    text: Could you give me the right fax number, and your name so we can follow up with you?
+  - turn_id: t4
+    speaker: pcp_office
+    text: It's Rosa, front desk. Send it again and put attention Rosa on it.
+labels:
+  outcome: {status: found, value: not_received}
+  contact_name: {status: found, value: Rosa}
+tags: [pcp_not_received]

@@ -1,0 +1,35 @@
+item_id: sup_09_contradictory_stock
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 12 (Evanston Home Medical) for a K0001 standard manual wheelchair
+  rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare for K0001,
+  K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest delivery,
+  then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.12.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: Do you have a K0001 standard manual wheelchair in stock?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: Yep, we've got a couple of those in the back.
+  - turn_id: t3
+    speaker: us
+    text: Great. And do you deliver to 60625?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: >-
+      We do, Tuesdays and Fridays. Oh wait -- hang on -- my coworker's saying the warehouse sheet shows
+      zero K0001s. I honestly don't know which one's right, the inventory system's been off all week.
+labels:
+  k0001_in_stock: {status: contradictory}
+  delivers_to_zip: {status: found, value: "yes"}
+tags: [contradictory, doubt]
+notes: >-
+  The rep says yes (t2) and then reports a conflicting count and cannot resolve it (t4): the
+  correct status is contradictory (the grader accepts ambiguous too, both mean "re-ask"). A clean
+  "yes" or "no" is wrong.

@@ -1,0 +1,40 @@
+item_id: ord_03_clean_order
+reader: read_order_document
+goal: >-
+  Read the written order received from Dr. Sarah Chen's office for Eleanor Martinez: the six order
+  elements, the item and HCPCS code exactly as written, the signature, and any changes.
+context_facts:
+  patient.name: Eleanor Martinez
+  order.item_requested: standard manual wheelchair
+  order.hcpcs_expected: K0001
+  pcp.name: Dr. Sarah Chen
+  order.version: "1"
+text: |
+  Nov 19 2026 03:47PM   SUNRISE FAMILY MEDICINE   3125550198     pg 1 of 1
+
+  DME ORDER / STANDARD WRITTEN ORDER
+  ---------------------------------
+  Beneficiary: MARTINEZ, ELEANOR          DOB: 03/14/1954
+  Medicare #: 1EG4-TE5-MK00
+  Date of order: 11/19/2026
+
+  Equipment: Standard manual wheelchair (std seat width, fixed arms, swing-away footrests)
+  HCPCS: K0001          Quantity: 1          LON: 99 months
+  Diagnosis: M17.0, R26.89
+
+  Practitioner: Sarah Chen, M.D.   NPI: 9999999999
+  Practitioner signature: [handwritten signature]  Sarah Chen MD     Date: 11/19/2026
+labels:
+  beneficiary_name: {status: found, value: Eleanor}
+  medicare_id: {status: found, value: 1EG4-TE5-MK00}
+  item_description: {status: found, value: Standard manual wheelchair}
+  hcpcs_code: {status: found, value: K0001}
+  quantity: {status: found, value: "1"}
+  order_date: {status: found, value: 11/19/2026}
+  practitioner_name: {status: found, value: Sarah Chen}
+  practitioner_npi: {status: found, value: "9999999999"}
+  signature_present: {status: found, value: "yes"}
+tags: [clean]
+notes: >-
+  Complete order. beneficiary_name label is "Eleanor" so both "MARTINEZ, ELEANOR" and "Eleanor
+  Martinez" match by containment. has_changes deliberately unlabelled (no change exists to quote).

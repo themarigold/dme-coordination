@@ -1,0 +1,65 @@
+item_id: sup_06_clean_qualified_readback
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 5 (ChicagoLand Durable Medical) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare
+  for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest
+  delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.5.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, Mira Mace calling for a Medicare patient who needs a standard manual wheelchair, K0001. Are
+      you taking new Medicare patients, can you bill Medicare for a K0001, and do you have one in stock?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: Yes we're taking new Medicare, yes we bill Medicare for K0001, and yes I've got them in stock.
+  - turn_id: t3
+    speaker: us
+    text: >-
+      Do you deliver to 60625, will you accept assignment for all 13 rental months, and would she need
+      to sign an ABN?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: >-
+      We deliver there, we accept assignment for the full rental, and no ABN for a standard chair.
+  - turn_id: t5
+    speaker: us
+    text: What's the earliest delivery?
+  - turn_id: t6
+    speaker: supplier_rep
+    text: Monday the 30th, I can hold that for her.
+  - turn_id: t7
+    speaker: supplier_rep
+    text: Only thing -- I'll need her Medicare number before I can put the order in.
+  - turn_id: readback
+    speaker: us
+    text: >-
+      Let me read that back: taking new Medicare, bills Medicare for K0001, in stock, delivers to
+      60625, assignment for all 13 months, no ABN, earliest delivery Monday the 30th, and you need her
+      Medicare ID before ordering. Is that right, and may I have your name?
+  - turn_id: t9
+    speaker: supplier_rep
+    text: That's all correct. It's Tanya, T-A-N-Y-A.
+labels:
+  call_outcome: {status: found, value: answered}
+  accepting_new_medicare: {status: found, value: "yes"}
+  bills_medicare_k0001: {status: found, value: "yes"}
+  k0001_in_stock: {status: found, value: "yes"}
+  delivers_to_zip: {status: found, value: "yes"}
+  accepts_assignment_all_months: {status: found, value: "yes"}
+  abn_required: {status: found, value: "no"}
+  earliest_delivery: {status: found, value: Monday the 30th, commitment: firm}
+  needs_info: {status: found, value: "yes"}
+  needs_info_item: {status: found, value: medicare_id}
+  rep_name: {status: found, value: Tanya}
+  readback_confirmed: {status: found, value: "yes"}
+tags: [clean, needs_info, readback]
+notes: >-
+  Clean, fully answered call. 2026-11-30 is a Monday. Our read-back turn has turn_id "readback"
+  (dme/evidence.py READBACK_TURN_ID); the rep's confirmation is in t9, directly after it.

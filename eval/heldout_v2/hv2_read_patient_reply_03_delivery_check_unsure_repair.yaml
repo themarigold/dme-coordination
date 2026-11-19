@@ -1,0 +1,46 @@
+item_id: hv2_read_patient_reply_03_delivery_check_unsure_repair
+reader: read_patient_reply
+goal: >-
+  Delivery-check text to Eleanor Martinez: did the wheelchair arrive, does it fit her, was she
+  shown how to use it, and does she have the supplier's repair number.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.consent_calls_texts: "yes"
+  handoff.supplier: supplier:5
+  supplier.5.name: ChicagoLand Durable Medical
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi Eleanor, it's Mira Mace. Did your wheelchair arrive? Does it fit you well, were you shown
+      how to use it, and do you have the supplier's number for repairs?
+  - turn_id: t2
+    speaker: patient
+    text: >-
+      Yes it came this morning. Sits nice, fits me fine. The driver showed me the brakes and how to
+      fold it up. A repair number I'm not sure, he left a folder, maybe its in there? I'll ask my
+      daughter to look. Can I give it back once my knees are better or do I have to keep it the
+      whole year?
+labels:
+  delivery_received: {status: found, value: "yes"}
+  fit_ok: {status: found, value: "yes"}
+  shown_how_to_use: {status: found, value: "yes"}
+  has_repair_number: {status: ambiguous}
+  helper_name: {status: not_stated}
+intents: [confirm, other_question]
+tags: [score_intents, delivery_check, uncertain_answer]
+notes: |-
+  EVIDENCE delivery_received t2 "Yes it came this morning"
+  EVIDENCE fit_ok t2 "fits me fine"
+  EVIDENCE shown_how_to_use t2 "The driver showed me the brakes and how to fold it up"
+  EVIDENCE has_repair_number t2 "A repair number I'm not sure, he left a folder, maybe its in there?"
+  EVIDENCE intent:confirm t2 "Yes it came this morning"
+  EVIDENCE intent:other_question t2 "Can I give it back once my knees are better or do I have to keep it the whole year?"
+  The repair-number question is answered, but with uncertainty ("I'm not sure ... maybe its in
+  there?"), so it is a doubt label (ambiguous or contradictory), neither yes nor no. Her daughter is
+  mentioned only as someone who will look in the folder, not as a helper she names for us to talk
+  to, so helper_name is not_stated. Her question is about returning the chair, not about cost
+  (other_question). "Yes it came this morning" says yes to our yes/no questions, which is the only
+  written definition of confirm ("says yes to our question"), so the expected intents are confirm
+  and other_question. gives_fact is not expected: a read that adds it is a harmless non-safety
+  extra and does not fail the item.

@@ -1,0 +1,53 @@
+item_id: hv2_read_pcp_reply_01_misfiled_no_date
+reader: read_pcp_reply
+goal: >-
+  Confirmation call to Sunrise Family Medicine (Dr. Sarah Chen's office) to check that our request
+  for Eleanor Martinez's standard written order and visit note (K0001 standard manual wheelchair)
+  arrived, get a named contact, and ask when the documents will be sent.
+context_facts:
+  pcp.name: Dr. Sarah Chen
+  pcp.practice: Sunrise Family Medicine, Chicago IL
+  pcp.request_status: sent
+  order.hcpcs_expected: K0001
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, I'm calling from Mira Mace about a records request we faxed yesterday for Eleanor
+      Martinez. It's for Dr. Chen's written order for a standard wheelchair and her last visit note.
+  - turn_id: t2
+    speaker: pcp_office
+    text: Sunrise Family Medicine, this is the front desk. Let me transfer you to records, one sec.
+  - turn_id: t3
+    speaker: pcp_office
+    text: >-
+      Records, this is Kwame. Martinez... Martinez... I don't see anything under, oh, wait. Here it
+      is, somebody scanned it into the wrong chart. Okay, yeah, I've got your request.
+  - turn_id: t4
+    speaker: us
+    text: Great, thank you. Who should we follow up with, and when do you think it'll be sent?
+  - turn_id: t5
+    speaker: pcp_office
+    text: >-
+      You can ask for me, Kwame, in records. As for when, honestly I can't give you a date, it's
+      whenever Dr. Chen gets to her signing pile.
+  - turn_id: t6
+    speaker: us
+    text: Understood. And will it come to us?
+  - turn_id: t7
+    speaker: pcp_office
+    text: To you, yeah, the fax number on your cover sheet.
+labels:
+  outcome: {status: found, value: received}
+  contact_name: {status: found, value: Kwame}
+  send_by: {status: not_stated}
+  supplier_named: {status: not_stated}
+tags: [pcp_misfiled, never_answered, transfer, messy]
+notes: |-
+  EVIDENCE outcome t3 "Okay, yeah, I've got your request"
+  EVIDENCE contact_name t5 "You can ask for me, Kwame, in records"
+  The office first says it sees nothing ("I don't see anything under"), then finds the request in
+  the wrong chart: the settled outcome is received, not not_received. The front desk (t2) gives no
+  name; Kwame names himself as the follow-up contact. We ask for a date and the office explicitly
+  declines to give one, so send_by is never answered and reading any phrase there is the failure.
+  The documents come to us, so no supplier is named.

@@ -1,0 +1,98 @@
+item_id: hv2_read_supplier_call_03_non_assigned_full_rental
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 12 (Evanston Home Medical) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60630: new Medicare patients, bills
+  Medicare for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months,
+  ABN, earliest delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60630"
+  patient.coverage: original_medicare_part_b
+  supplier.12.name: Evanston Home Medical
+  supplier.12.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, this is Mira Mace calling for a Medicare Part B patient in Chicago who needs a K0001
+      standard manual wheelchair. Can I ask a few quick questions?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: Sure thing, this is Priya in intake.
+  - turn_id: t3
+    speaker: us
+    text: Are you accepting new Medicare patients?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: We are.
+  - turn_id: t5
+    speaker: us
+    text: >-
+      Do you bill Medicare for the K0001, and do you accept assignment for all thirteen rental
+      months?
+  - turn_id: t6
+    speaker: supplier_rep
+    text: >-
+      So, we're non-participating. We do send the claim to Medicare for her, but we don't take
+      assignment. What that means is she'd pay us the full rental each month, and Medicare
+      reimburses her directly for their part.
+  - turn_id: t7
+    speaker: us
+    text: Okay, thank you. Is a K0001 in stock, and do you deliver to 60630?
+  - turn_id: t8
+    speaker: supplier_rep
+    text: In stock, yes. And 60630 is fine, we cover all of Chicago.
+  - turn_id: t9
+    speaker: us
+    text: Would she need to sign an ABN?
+  - turn_id: t10
+    speaker: supplier_rep
+    text: Not for this, no.
+  - turn_id: t11
+    speaker: us
+    text: And the earliest delivery?
+  - turn_id: t12
+    speaker: supplier_rep
+    text: Monday the 30th. We're closed for Thanksgiving.
+  - turn_id: readback
+    speaker: us
+    text: >-
+      Let me read that back: you're taking new Medicare patients; you send the claim to Medicare
+      but don't take assignment, so she would pay the full monthly rental; a K0001 is in stock; you
+      deliver to 60630; no ABN; earliest delivery Monday the 30th; and I spoke with Priya. Correct?
+  - turn_id: t13
+    speaker: supplier_rep
+    text: Correct.
+labels:
+  call_outcome: {status: found, value: answered}
+  accepting_new_medicare: {status: found, value: "yes"}
+  bills_medicare_k0001: {status: found, value: "yes"}
+  accepts_assignment_all_months: {status: found, value: "no"}
+  full_price_or_no_assignment: {status: found, value: "yes"}
+  collects_coinsurance_at_delivery: {status: not_stated}
+  k0001_in_stock: {status: found, value: "yes"}
+  delivers_to_zip: {status: found, value: "yes"}
+  abn_required: {status: found, value: "no"}
+  earliest_delivery: {status: found, value: Monday the 30th, commitment: firm}
+  rep_name: {status: found, value: Priya}
+  readback_confirmed: {status: found, value: "yes"}
+tags: [coinsurance_vs_full_price, no_assignment, firm_date, readback]
+notes: |-
+  EVIDENCE call_outcome t2 "this is Priya in intake"
+  EVIDENCE accepting_new_medicare t4 "We are"
+  EVIDENCE bills_medicare_k0001 t6 "We do send the claim to Medicare for her"
+  EVIDENCE accepts_assignment_all_months t6 "we don't take assignment"
+  EVIDENCE full_price_or_no_assignment t6 "she'd pay us the full rental each month"
+  EVIDENCE k0001_in_stock t8 "In stock, yes"
+  EVIDENCE delivers_to_zip t8 "60630 is fine, we cover all of Chicago"
+  EVIDENCE abn_required t10 "Not for this, no"
+  EVIDENCE earliest_delivery t12 "Monday the 30th"
+  EVIDENCE rep_name t2 "this is Priya in intake"
+  EVIDENCE readback_confirmed t13 "Correct"
+  A polite, matter-of-fact non-assigned supplier. Per the knowledge file (assignment entry) only a
+  non-assigned supplier may request payment in full; "she'd pay us the full rental each month" is
+  the full-price / no-assignment condition, not the normal "collects 20% at delivery" condition, so
+  collects_coinsurance_at_delivery is labelled absent. bills_medicare_k0001 is "yes": the supplier
+  submits the K0001 claim to Medicare ("We do send the claim to Medicare for her"); declining
+  assignment is a separate field (accepts_assignment_all_months "no"). The delivery date has no hedge, so commitment is firm (Monday 2026-11-30 is a Monday).

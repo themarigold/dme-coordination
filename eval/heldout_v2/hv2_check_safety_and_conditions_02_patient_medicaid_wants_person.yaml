@@ -1,0 +1,39 @@
+item_id: hv2_check_safety_and_conditions_02_patient_medicaid_wants_person
+reader: check_safety_and_conditions
+goal: >-
+  Safety and conditions check on Eleanor Martinez's reply to a text proposing a delivery day for
+  her standard manual wheelchair.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.coverage: original_medicare_part_b
+  patient.medicaid_or_msp: "no"
+  handoff.supplier: supplier:5
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi Eleanor, this is Mira Mace. The supplier would like to deliver your wheelchair on Thursday
+      afternoon. Does that work for you?
+  - turn_id: t2
+    speaker: patient
+    text: >-
+      Thursday is ok I guess. Sorry I am slow to answer, my sister passed away last week and things
+      have been a mess. I'm on the state Medicaid too, the card says Illinois Medicaid, does that
+      matter for this? Honestly could a real person call me instead, these texts confuse me.
+labels:
+  medicaid_or_msp: {status: found, value: "yes"}
+  wants_person: {status: found, value: "yes"}
+  deceased: {status: not_stated}
+  opts_out: {status: not_stated}
+  hospitalised: {status: not_stated}
+  hospice: {status: not_stated}
+  medicare_advantage: {status: not_stated}
+tags: [unsolicited, medicaid, wants_person, distractor_death]
+notes: |-
+  EVIDENCE medicaid_or_msp t2 "I'm on the state Medicaid too"
+  EVIDENCE wants_person t2 "could a real person call me instead"
+  We asked about a delivery day; the Medicaid statement and the request for a person are both
+  unsolicited. context_facts records an earlier "no" to the Medicaid question: this reply
+  contradicts it, which is exactly why it must be caught. The death is her sister's, not hers, so
+  deceased is absent. "could a real person call me instead" asks for a human, not for contact to
+  stop, so opts_out is absent.

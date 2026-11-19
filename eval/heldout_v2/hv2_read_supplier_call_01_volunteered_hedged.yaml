@@ -1,0 +1,96 @@
+item_id: hv2_read_supplier_call_01_volunteered_hedged
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 7 (Halsted Home Health Supply) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60630: new Medicare patients, bills
+  Medicare for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months,
+  ABN, earliest delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60630"
+  patient.coverage: original_medicare_part_b
+  supplier.7.name: Halsted Home Health Supply
+  supplier.7.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, good morning. I'm calling from Mira Mace, a care coordination service, on behalf of a
+      Medicare patient who needs a standard manual wheelchair. Do you have a few minutes?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      Morning! Halsted Home Health, this is Marisol. A standard chair, the K0001? Oh, we've got
+      plenty of those sitting in the back right now, so you're in luck. What do you need from me?
+  - turn_id: t3
+    speaker: us
+    text: Great. Are you accepting new Medicare patients, and do you bill Medicare for the K0001?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: Mm-hm, yes on both. We're a Medicare supplier, we bill them directly.
+  - turn_id: t5
+    speaker: us
+    text: And would you deliver to ZIP code 60630?
+  - turn_id: t6
+    speaker: supplier_rep
+    text: 60630... that's out by Jefferson Park? Yeah, we go out there.
+  - turn_id: t7
+    speaker: us
+    text: Do you accept assignment for all thirteen months of the rental?
+  - turn_id: t8
+    speaker: supplier_rep
+    text: All thirteen, yep. We take assignment the whole way through.
+  - turn_id: t9
+    speaker: us
+    text: Would the patient need to sign an Advance Beneficiary Notice?
+  - turn_id: t10
+    speaker: supplier_rep
+    text: For a basic K0001? No, no ABN.
+  - turn_id: t11
+    speaker: us
+    text: And what's the earliest you could deliver?
+  - turn_id: t12
+    speaker: supplier_rep
+    text: >-
+      Ehh... probably Friday? Don't hold me to that though, it depends on whether Luis has room on
+      his route.
+  - turn_id: readback
+    speaker: us
+    text: >-
+      Let me read that back. You're accepting new Medicare patients, you bill Medicare for K0001,
+      you have a K0001 in stock, you deliver to 60630, you accept assignment for all thirteen
+      months, no ABN, and the earliest delivery is possibly Friday, not confirmed. And I spoke with
+      Marisol. Is that right?
+  - turn_id: t13
+    speaker: supplier_rep
+    text: That's right, you got it all.
+labels:
+  call_outcome: {status: found, value: answered}
+  accepting_new_medicare: {status: found, value: "yes"}
+  bills_medicare_k0001: {status: found, value: "yes"}
+  k0001_in_stock: {status: found, value: "yes"}
+  delivers_to_zip: {status: found, value: "yes"}
+  accepts_assignment_all_months: {status: found, value: "yes"}
+  abn_required: {status: found, value: "no"}
+  earliest_delivery: {status: found, value: Friday, commitment: tentative}
+  rep_name: {status: found, value: Marisol}
+  readback_confirmed: {status: found, value: "yes"}
+  collects_coinsurance_at_delivery: {status: not_stated}
+  full_price_or_no_assignment: {status: not_stated}
+tags: [volunteered_early, hedged_date, tentative_date, readback]
+notes: |-
+  EVIDENCE call_outcome t2 "Halsted Home Health, this is Marisol"
+  EVIDENCE accepting_new_medicare t4 "yes on both"
+  EVIDENCE bills_medicare_k0001 t4 "we bill them directly"
+  EVIDENCE k0001_in_stock t2 "we've got plenty of those sitting in the back right now"
+  EVIDENCE delivers_to_zip t6 "Yeah, we go out there"
+  EVIDENCE accepts_assignment_all_months t8 "All thirteen, yep"
+  EVIDENCE abn_required t10 "No, no ABN"
+  EVIDENCE earliest_delivery t12 "probably Friday?"
+  EVIDENCE rep_name t2 "this is Marisol"
+  EVIDENCE readback_confirmed t13 "That's right, you got it all"
+  Stock is volunteered in the greeting (t2). We never ask about stock; it comes up again only in
+  our read-back. It must still be read as found from t2. The delivery date is hedged twice ("probably", "Don't hold me to that"), so commitment is
+  tentative; the value is the bare day the rep named. The two condition fields are labelled
+  absent: no coinsurance timing or up-front payment is mentioned, so reading either as present
+  would be a false condition.

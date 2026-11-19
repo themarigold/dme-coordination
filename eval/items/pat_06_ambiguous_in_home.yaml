@@ -1,0 +1,23 @@
+item_id: pat_06_ambiguous_in_home
+reader: read_patient_reply
+goal: >-
+  First-contact script, in-home use question: will Eleanor use the wheelchair inside her home.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.in_home_use: ""
+turns:
+  - turn_id: t1
+    speaker: us
+    text: Will you be using the wheelchair inside your home?
+  - turn_id: t2
+    speaker: patient
+    text: >-
+      Oh I don't know. Mostly I need it for church and getting to the doctor, the parking lot is so
+      far. At home I hold onto things. Maybe sometimes? Ask me again when I have it, I suppose.
+labels:
+  in_home_use: {status: ambiguous}
+tags: [ambiguous, doubt, hedge]
+notes: >-
+  Neither a yes nor a no to in-home use: her stated need is outside the home and in-home use is a
+  "maybe". The correct status is ambiguous (contradictory also accepted); a clean "yes" would hide
+  the outside-home-only risk.

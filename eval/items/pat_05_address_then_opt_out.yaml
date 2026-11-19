@@ -1,0 +1,28 @@
+item_id: pat_05_address_then_opt_out
+reader: read_patient_reply
+goal: >-
+  First-contact script, address question: Eleanor's street address and ZIP code for delivery.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.identity_verified: "yes"
+  patient.address: ""
+  patient.zip: ""
+turns:
+  - turn_id: t1
+    speaker: us
+    text: Thanks Eleanor. What's the street address and ZIP code where the wheelchair should go?
+  - turn_id: t2
+    speaker: patient
+    text: >-
+      It's 4418 N Kedzie Ave, apartment 2B, Chicago 60625, the buzzer doesn't work so they have to
+      call up. But I have to tell you, my granddaughter read me something about scams with Medicare
+      calls and now I'm nervous. I don't want any more calls or texts from you people about this,
+      I'll just wait and see what Dr. Chen says when I go back in February.
+labels:
+  address: {status: found, value: 4418 N Kedzie Ave}
+  zip: {status: found, value: "60625"}
+intents: [gives_fact, opt_out]
+tags: [buried_opt_out, opt_out, score_intents, unsolicited]
+notes: >-
+  She answers the address question (gives_fact) and then opts out of calls and texts in the same
+  reply. Intents are scored per intent; an extra intent is reported, not failed.

@@ -1,0 +1,29 @@
+item_id: h_saf_01_non_par_full_amount
+reader: check_safety_and_conditions
+goal: >-
+  Check this supplier call for safety signals and supplier conditions (needs information, collects
+  coinsurance at delivery, wants full price or will not take assignment, ABN requested, any other
+  condition).
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  supplier.12.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Do you accept Medicare assignment for all thirteen rental months, and would she pay her 20% when
+      the chair is delivered?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      Nah, we don't do the twenty percent thing. We're non-par for wheelchairs -- she'd pay the whole
+      rental amount on delivery day and Medicare reimburses her directly. Most people don't mind.
+labels:
+  full_price_or_no_assignment: {status: found, value: "yes"}
+  collects_coinsurance_at_delivery: {status: not_stated}
+  abn_requested: {status: not_stated}
+tags: [coinsurance_vs_full_price, full_price, conditions]
+notes: >-
+  Mentions the 20% only to deny it; payment on delivery day is the full amount without assignment.
+  collects_coinsurance_at_delivery = yes is the trap (not_stated or "no" accepted).

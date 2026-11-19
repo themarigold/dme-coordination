@@ -1,0 +1,41 @@
+item_id: h_note_01_no_f_or_g_no_weight
+reader: read_visit_note
+goal: >-
+  Read Dr. Sarah Chen's visit note for Eleanor Martinez for the Medicare manual wheelchair coverage
+  criteria A through G and her weight in pounds.
+context_facts:
+  patient.name: Eleanor Martinez
+  patient.age: "72"
+  order.hcpcs_expected: K0001
+  note.version: "1"
+text: |
+  PROGRESS NOTE  Sunrise Family Medicine
+  Patient: Eleanor Martinez  DOB 03/14/1954  Seen: 11/13/2026  Provider: S. Chen MD
+
+  Subjective: 72F, knee OA both sides, worse x 6 wks. Uses a cane, and tried her sister's walker last
+  month -- with either one she still cannot make it from the bedroom to the bathroom safely, has had
+  to crawl twice. Can't get to the kitchen to make meals. Says "I'll use a wheelchair, whatever gets
+  me to the bathroom", plans to use it daily in her apartment.
+
+  Objective: BP 142/84, HR 80, RR 16, Ht 63 in. Knees: effusion R>L, crepitus, flexion to 90.
+  Gait slow, wide-based, unable to walk 20 ft without support.
+
+  Assessment: Mobility limitation that significantly impairs MRADLs (toileting, meal preparation) in
+  customary locations in the home; not safely resolved with a cane or a walker. A manual wheelchair
+  will significantly improve her ability to participate in MRADLs and she will use it regularly in
+  the home.
+
+  Plan: Standard manual wheelchair. Verbal order. Follow up 12 weeks.
+labels:
+  criterion_a: {status: found, value: documented}
+  criterion_b: {status: found, value: documented}
+  criterion_d: {status: found, value: documented}
+  criterion_e: {status: found, value: documented}
+  criterion_f: {status: not_stated, value: missing}
+  criterion_g: {status: not_stated, value: missing}
+  weight_lb: {status: not_stated}
+tags: [missing_criterion, no_weight]
+notes: >-
+  Neither upper-extremity function / ability to self-propel (F) nor a caregiver who can push (G) is
+  mentioned, so the F-or-G requirement is unmet. Vitals list height but no weight. Criterion C
+  unlabelled.

@@ -1,0 +1,49 @@
+item_id: sup_01_negated_stock
+reader: read_supplier_call
+goal: >-
+  Qualification call to supplier 1 (Lakeshore Home Medical Equipment) for a K0001 standard manual
+  wheelchair rental for a Medicare Part B patient in ZIP 60625: new Medicare patients, bills Medicare
+  for K0001, K0001 in stock, delivers to the ZIP, assignment for all 13 rental months, ABN, earliest
+  delivery, then a read-back.
+context_facts:
+  order.hcpcs_expected: K0001
+  patient.zip: "60625"
+  patient.coverage: original_medicare_part_b
+  supplier.1.status: calling
+turns:
+  - turn_id: t1
+    speaker: us
+    text: >-
+      Hi, this is Mira Mace calling on behalf of a Medicare patient about a standard manual wheelchair
+      rental, HCPCS K0001. Do you have a couple minutes for some quick questions?
+  - turn_id: t2
+    speaker: supplier_rep
+    text: >-
+      Yeah go ahead, hold on one sec -- [muffled] I'll be right there, just put it on the cart -- ok
+      sorry, go ahead.
+  - turn_id: t3
+    speaker: us
+    text: Are you taking new Medicare patients, and can you bill Medicare for a K0001?
+  - turn_id: t4
+    speaker: supplier_rep
+    text: >-
+      New Medicare, yes. And we bill Medicare for the K0001 all day long, that's not an issue.
+  - turn_id: t5
+    speaker: us
+    text: Do you have a K0001 in stock right now?
+  - turn_id: t6
+    speaker: supplier_rep
+    text: >-
+      Uh, let me pull it up... no. No, I'm not showing any K0001s in the warehouse. It's not that we
+      don't carry them, we do, we just got cleaned out last week. Next shipment isn't till after
+      Thanksgiving.
+labels:
+  call_outcome: {status: found, value: answered}
+  accepting_new_medicare: {status: found, value: "yes"}
+  bills_medicare_k0001: {status: found, value: "yes"}
+  k0001_in_stock: {status: found, value: "no"}
+tags: [negation, negated_stock]
+notes: >-
+  The double negative ("not that we don't carry them") is about carrying the item, not stock; the
+  stock answer itself is a plain no. earliest_delivery deliberately unlabelled (a shipment date is
+  not a delivery offer).

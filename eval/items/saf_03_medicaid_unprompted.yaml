@@ -1,0 +1,24 @@
+item_id: saf_03_medicaid_unprompted
+reader: check_safety_and_conditions
+goal: >-
+  Check this reply for safety signals (opts out, wants a person, deceased, hospitalised, in hospice,
+  on Medicare Advantage, receives Medicaid or a Savings Program) and supplier conditions.
+context_facts:
+  patient.name: Eleanor Martinez
+turns:
+  - turn_id: t1
+    speaker: us
+    text: Hi Eleanor, do you have any questions about what the wheelchair will cost you?
+  - turn_id: t2
+    speaker: patient
+    text: >-
+      Yes I don't understand why I'd pay anything at all. I have the Medicaid card too, the one from
+      Illinois, doesn't that cover the 20 percent?
+labels:
+  medicaid_or_msp: {status: found, value: "yes"}
+  medicare_advantage: {status: not_stated}
+  opts_out: {status: not_stated}
+tags: [medicaid, safety, unsolicited]
+notes: >-
+  Volunteered while asking a cost question (not an answer to the scripted Medicaid question), so it
+  is a safety signal.

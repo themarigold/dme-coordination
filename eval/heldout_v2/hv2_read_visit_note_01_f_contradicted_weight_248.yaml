@@ -1,0 +1,66 @@
+item_id: hv2_read_visit_note_01_f_contradicted_weight_248
+reader: read_visit_note
+goal: >-
+  Read our copy of Dr. Sarah Chen's visit note for Eleanor Martinez: whether each LCD L33788
+  coverage criterion A-G for a K0001 standard manual wheelchair is documented, missing or
+  contradictory, and her weight in pounds.
+context_facts:
+  patient.name: Eleanor Martinez
+  order.hcpcs_expected: K0001
+  note.version: "1"
+  pcp.name: Dr. Sarah Chen
+text: |
+  SUNRISE FAMILY MEDICINE - OFFICE VISIT
+  Patient: Eleanor Martinez    DOB 03/14/1954    Date of service: 11/13/2026
+  Provider: Sarah Chen, MD
+
+  CC: Difficulty getting around the apartment; requests a wheelchair.
+
+  HPI: 72 y/o F with severe bilateral knee OA and lumbar spinal stenosis. Over the past two months
+  she has been unable to walk from her bedroom to the bathroom without stopping to rest, and she now
+  sponge-bathes at the kitchen sink because she cannot safely get to the tub. Needs help dressing
+  her lower body most days. Trialed a single-point cane and then a rolling walker with PT in
+  Sept-Oct; still unable to complete household distances, and had a near-fall with the walker on
+  10/22.
+
+  Vitals: BP 138/82, HR 76, Wt 248 lb, Ht 5'4"
+
+  Exam: Bilateral knee crepitus, effusion R > L. L upper extremity 5/5. R shoulder abduction 2/5
+  s/p rotator cuff tear, R grip weak. Alert and oriented x3, follows multi-step commands.
+
+  Assessment/Plan:
+  1. Mobility limitation impairing toileting, bathing and dressing in the home. Standard manual
+     wheelchair recommended; she will use it daily in the apartment to reach the bathroom and
+     kitchen, which should substantially improve her toileting and bathing.
+  2. Pt agreeable to using a manual wheelchair at home.
+  3. Adequate upper-extremity strength to self-propel safely during a typical day.
+  4. Lives alone.
+
+  Addendum 11/13/2026 (PT phone note): Pt could not self-propel the trial wheelchair more than a
+  few feet with her R arm; would need someone to push her.
+labels:
+  criterion_a: {status: found, value: documented}
+  criterion_b: {status: found, value: documented}
+  criterion_c: {status: not_stated, value: missing}
+  criterion_d: {status: found, value: documented}
+  criterion_e: {status: found, value: documented}
+  criterion_f: {status: contradictory, value: contradictory}
+  criterion_g: {status: not_stated, value: missing}
+  weight_lb: {status: found, value: "248"}
+tags: [missing_criterion, contradictory_criterion, weight_near_250]
+notes: |-
+  EVIDENCE criterion_a doc "she now sponge-bathes at the kitchen sink because she cannot safely get to the tub"
+  EVIDENCE criterion_b doc "still unable to complete household distances, and had a near-fall with the walker"
+  EVIDENCE criterion_d doc "she will use it daily in the apartment to reach the bathroom and kitchen"
+  EVIDENCE criterion_e doc "Pt agreeable to using a manual wheelchair at home"
+  EVIDENCE criterion_f doc "Pt could not self-propel the trial wheelchair more than a few feet with her R arm"
+  EVIDENCE weight_lb doc "Wt 248 lb"
+  A: ADL impairment (toileting, bathing, dressing) in the home. B: both cane and walker were tried
+  and failed. C: "apartment" is named but nothing on access between rooms, space or surfaces, so
+  missing. D: daily in-home use that improves toileting/bathing (the addendum is about how she
+  propels the chair, which is F, and does not say she will not use it). E: agreeable to use at home, no
+  unwillingness stated. F: plan item 3 says strength is adequate to self-propel, the exam shows a
+  weak right arm and the PT addendum says she could not self-propel and needs someone to push:
+  contradictory. G: "Lives alone" and no caregiver is named anywhere, so G is missing (the
+  addendum's "someone to push her" is a need, not a caregiver who is available and willing).
+  Weight 248 lb: under the 250 lb K0006 threshold by 2 lb; the label is the digits as written.
